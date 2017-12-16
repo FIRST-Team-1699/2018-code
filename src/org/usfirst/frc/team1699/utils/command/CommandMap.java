@@ -7,18 +7,15 @@ package org.usfirst.frc.team1699.utils.command;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.BiConsumer;
 
-import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
-
-public class AutoCommandMap {
-	private Map<String, AutoCommand> cmds; //Stores Command to a String key
+public class CommandMap {
+	private Map<String, Command> cmds; //Stores Command to a String key
 	
 	/**
 	 * Constructor
 	 */
-	public AutoCommandMap(){
-		cmds = new HashMap<String, AutoCommand>();
+	public CommandMap(){
+		cmds = new HashMap<String, Command>();
 	}
 	
 	/**
@@ -26,7 +23,7 @@ public class AutoCommandMap {
 	 * 
 	 * @return Map of Commands
 	 */
-	public Map<String, AutoCommand> getCmds(){
+	public Map<String, Command> getCmds(){
 		return cmds;
 	}
 	
@@ -36,7 +33,7 @@ public class AutoCommandMap {
 	 * @param key
 	 * @return Command for a key
 	 */
-	public AutoCommand getCommand(final String key){
+	public Command getCommand(final String key){
 		return cmds.get(key);
 	}
 	
@@ -59,15 +56,11 @@ public class AutoCommandMap {
 		return cmds.size();
 	}
 	
-	public void addEntry(final String key, final AutoCommand cmd){
+	public void addEntry(final String key, final Command cmd){
 		if(cmds.containsKey(key)){
 			throw new NameUsedException();
 		}
 		
 		cmds.put(key, cmd);
-	}
-	
-	public void forEach(BiConsumer<? super String, ? super AutoCommand> action){
-		cmds.forEach(action);
 	}
 }
