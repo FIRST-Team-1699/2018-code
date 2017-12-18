@@ -2,6 +2,7 @@ package org.usfirst.frc.team1699.robot.commands;
 
 import org.usfirst.frc.team1699.robot.Constants;
 import org.usfirst.frc.team1699.robot.Joysticks;
+import org.usfirst.frc.team1699.robot.pid.PIDLoop;
 import org.usfirst.frc.team1699.utils.command.Command;
 import org.usfirst.frc.team1699.utils.sensors.BetterEncoder;
 import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
@@ -9,9 +10,11 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Command{
 	
@@ -21,6 +24,7 @@ public class Drive extends Command{
 	private static final boolean HIGH_GEAR = true;
 	private static final boolean LOW_GEAR = false;
 	
+	//Returns an instance of the Drive class. Makes it so only one instance can ever exist.
 	public static Drive getInstance(){
 		return instance;
 	}
@@ -48,6 +52,9 @@ public class Drive extends Command{
 	//Drive train (might change)
 	private final RobotDrive driveTrain;
 	
+	//Software controllers
+	private final PIDLoop rotatePID;
+	
 	private Drive(){
 		super("Drive", 0);
 		
@@ -60,6 +67,9 @@ public class Drive extends Command{
 		driveGyro = new BetterGryo(Constants.GRYO_PORT);
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
+		
+		//Software controllers
+		rotatePID = new PIDLoop("PID", 1, 0.0, 0.0, 0.0, null);
 		
 		//TBD
 		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
@@ -89,6 +99,7 @@ public class Drive extends Command{
 
 	@Override
 	public void run() {
+		//Runs drive train
 		switch(driveState){
 			case OPEN_LOOP: openLoop();
 				break;
@@ -105,6 +116,16 @@ public class Drive extends Command{
 			default: openLoop();
 				break;
 		}
+		
+		//Gearing control
+		//Might want to change gear to be reliant on desired speed EX. When driver inputs a slow speed, automatically switch to low gear
+		if(Joysticks.getInstance().getDriveStick().getRawButton(1)){
+			if(isHighGear){
+				setLowGear();
+			}else if(isLowGear){
+				setHighGear();
+			}
+		}
 	}
 	
 	private void openLoop() {
@@ -112,28 +133,31 @@ public class Drive extends Command{
 	}
 	
 	private void straightLine() {
-		
+		rotatePID.setGoal(0);
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 	}
 	
 	private void closedLoop() {
-		
+		//Closed loop - need to determine what this should entail
 	}
 	
 	private void setVelocity() {
-		
+		//Drives at a predetermined velocity
 	}
 	
 	private void autonomous() {
-		
+		//Used for autonomous
 	}
 	
 	private void goalTracking() {
-		
+		//Used to track a vision target
 	}
 
 	@Override
 	public void outputToDashboard() {
-		
+		//Puts gear state on dashboard
+		SmartDashboard.putBoolean("High Gear:", isHighGear);
+		SmartDashboard.putBoolean("Low Gear:", isLowGear);
 	}
 
 	@Override
