@@ -12,5 +12,7 @@ public class Constants {
 	public static final int STARBOARD_ENCODER_A = 0;
 	public static final int STARBOARD_ENCODER_B = 0;
 	public static final int SHIFT_SOLENOID = 0;
+	public static final int DRIVE_STICK_PORT = 0;
+	public static final int OPERATOR_STICK_PORT = 0;
 
 }

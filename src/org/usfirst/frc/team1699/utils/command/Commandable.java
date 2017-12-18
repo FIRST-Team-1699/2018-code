@@ -1,11 +1,6 @@
 package org.usfirst.frc.team1699.utils.command;
 
 public interface Commandable{
-
-	/**
-	 * This method should contain initializers
-	 */
-	public abstract void init(); //Abstract method that should hold code that is supposed to be called during init
 	
 	/**
 	 * This method should contain code run by teleop

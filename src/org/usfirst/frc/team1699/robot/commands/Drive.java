@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1699.robot.commands;
 
 import org.usfirst.frc.team1699.robot.Constants;
+import org.usfirst.frc.team1699.robot.Joysticks;
 import org.usfirst.frc.team1699.utils.command.Command;
 import org.usfirst.frc.team1699.utils.sensors.BetterEncoder;
 import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
@@ -8,12 +9,17 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class Drive extends Command{
 	
 	private static Drive instance = new Drive();
+	
+	//Shifter Constants
+	private static final boolean HIGH_GEAR = true;
+	private static final boolean LOW_GEAR = false;
 	
 	public static Drive getInstance(){
 		return instance;
@@ -39,6 +45,9 @@ public class Drive extends Command{
 	private boolean isLowGear;
 	private DriveState driveState;
 	
+	//Drive train (might change)
+	private final RobotDrive driveTrain;
+	
 	private Drive(){
 		super("Drive", 0);
 		
@@ -52,6 +61,9 @@ public class Drive extends Command{
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
 		
+		//TBD
+		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
+		
 		//Sets drive state
 		isHighGear = false;
 		isLowGear = false;
@@ -61,23 +73,61 @@ public class Drive extends Command{
 
 	private void setHighGear() {
 		if(!isHighGear){
-			//TODO fill in
+			isHighGear = true;
+			isLowGear = false;
+			shifter.set(HIGH_GEAR);
 		}
 	}
 	
 	private void setLowGear() {
 		if(!isLowGear){
-			//TODO fill in
+			isLowGear = true;
+			isHighGear = false;
+			shifter.set(LOW_GEAR);
 		}
 	}
 
 	@Override
-	public void init() {
+	public void run() {
+		switch(driveState){
+			case OPEN_LOOP: openLoop();
+				break;
+			case STRAIGHT_LINE: straightLine();
+				break;
+			case CLOSED_LOOP: closedLoop();
+				break;
+			case SET_VELOCITY: setVelocity();
+				break;
+			case AUTONOMOUS: autonomous();
+				break;
+			case GOAL_TRACKING: goalTracking();
+				break;
+			default: openLoop();
+				break;
+		}
+	}
+	
+	private void openLoop() {
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick());
+	}
+	
+	private void straightLine() {
 		
 	}
-
-	@Override
-	public void run() {
+	
+	private void closedLoop() {
+		
+	}
+	
+	private void setVelocity() {
+		
+	}
+	
+	private void autonomous() {
+		
+	}
+	
+	private void goalTracking() {
 		
 	}
 

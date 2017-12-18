@@ -24,11 +24,6 @@ public abstract class Command implements Commandable{
 		this.name = name;
 		this.id = id;
 	}
-
-	/**
-	 * This method should contain initializers
-	 */
-	public abstract void init(); //Abstract method that should hold code that is supposed to be called during init
 	
 	/**
 	 * This method should contain code run by teleop
