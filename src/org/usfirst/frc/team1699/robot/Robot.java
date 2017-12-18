@@ -18,11 +18,11 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void robotInit() {
-		this.portMaster = new TalonSRX(Constants.PORT_MASTER_PORT);
-		this.portSlave = new TalonSRX(Constants.PORT_SLAVE_PORT);
-		this.starboardMaster = new TalonSRX(Constants.STARBOARD_MASTER_PORT);
-		this.starboardSlave = new TalonSRX(Constants.STARBOARD_SLAVE_PORT);
-		this.drive = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
+		Robot.portMaster = new TalonSRX(Constants.PORT_MASTER_PORT);
+		Robot.portSlave = new TalonSRX(Constants.PORT_SLAVE_PORT);
+		Robot.starboardMaster = new TalonSRX(Constants.STARBOARD_MASTER_PORT);
+		Robot.starboardSlave = new TalonSRX(Constants.STARBOARD_SLAVE_PORT);
+		Robot.drive = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
 	}
 
 	@Override
