@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Drive extends Command{
 	
+	//One and only instance of "this"
 	private static Drive instance = new Drive();
 	
 	//Shifter Constants
@@ -40,7 +41,7 @@ public class Drive extends Command{
 	
 	//Hardware control
 	private final CANTalon portMaster, portSlave, starboardMaster, starboardSlave;
-	private final Solenoid shifter;
+	private final Solenoid shifter; //May need to change to double solenoid. Only one because hardware can be used to split output.
 	private final Gyro driveGyro;
 	private final Encoder portEncoder, starboardEncoder;
 	
@@ -54,6 +55,7 @@ public class Drive extends Command{
 	
 	//Software controllers
 	private final PIDLoop rotatePID;
+	private final PIDLoop velocityPID;
 	
 	private Drive(){
 		super("Drive", 0);
@@ -69,9 +71,10 @@ public class Drive extends Command{
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
 		
 		//Software controllers
-		rotatePID = new PIDLoop("PID", 1, 0.0, 0.0, 0.0, null);
+		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
+		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
 		
-		//TBD
+		//TBD may change if we end up with our own method of control
 		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
 		
 		//Sets drive state
@@ -81,6 +84,7 @@ public class Drive extends Command{
 		setHighGear();
 	}
 
+	//Puts robot in high gear
 	private void setHighGear() {
 		if(!isHighGear){
 			isHighGear = true;
@@ -89,6 +93,7 @@ public class Drive extends Command{
 		}
 	}
 	
+	//Puts robot in low gear
 	private void setLowGear() {
 		if(!isLowGear){
 			isLowGear = true;
@@ -99,7 +104,7 @@ public class Drive extends Command{
 
 	@Override
 	public void run() {
-		//Runs drive train
+		//Runs drive train based on current control state
 		switch(driveState){
 			case OPEN_LOOP: openLoop();
 				break;
@@ -129,28 +134,51 @@ public class Drive extends Command{
 	}
 	
 	private void openLoop() {
+		//Standard open loop driving
+		//TODO make sure other states do not interfere
 		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick());
 	}
 	
 	private void straightLine() {
+		//Used to make the robot track in a straight line
+		//TODO Test
 		rotatePID.setGoal(0);
 		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 	}
 	
 	private void closedLoop() {
 		//Closed loop - need to determine what this should entail
+		//Speed is proportional to joystick up/down
+		//Rotation is proportional to joystick left/right
+		//Need verification
 	}
 	
 	private void setVelocity() {
 		//Drives at a predetermined velocity
+		//May transform into closed loop
 	}
 	
 	private void autonomous() {
 		//Used for autonomous
+		//TODO figure out how integrate this with scripting language, or how to change scripting language
 	}
 	
 	private void goalTracking() {
 		//Used to track a vision target
+		//TODO determine what type of vision system we are using and feed values into a function to determine angle
+		//*continued* then feed into gyro and turn based on that
+	}
+	
+	//Sets correct drive state
+	//TODO make sure this is thread save if we end up going to that direction
+	public void setState(DriveState state){
+		this.driveState = state;
+	}
+	
+	//Gets correct drive state
+	//TODO make sure this is thread save if we end up going to that direction
+	public DriveState getState(){
+		return this.driveState;
 	}
 
 	@Override

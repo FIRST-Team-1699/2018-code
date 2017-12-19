@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.Joystick;
 
 public class Joysticks {
 	
+	//TODO Rework how to transfer user input. This is not a clean method.
+	
 	private final Joystick driveInstance;
 	private final Joystick operatorInstance;
 	
