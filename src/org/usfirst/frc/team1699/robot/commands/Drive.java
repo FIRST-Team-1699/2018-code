@@ -150,6 +150,7 @@ public class Drive extends Command{
 		//Closed loop - need to determine what this should entail
 		//Speed is proportional to joystick up/down
 		//Rotation is proportional to joystick left/right
+		//Look at up/down value, if within deadband, drive straight, else, turn at a rate proportional to left/right
 		//Need verification
 	}
 	
