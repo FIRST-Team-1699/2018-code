@@ -181,6 +181,23 @@ public class Drive extends Command{
 	public DriveState getState(){
 		return this.driveState;
 	}
+	
+	//Uses encoders to calculate speed over the floor
+	private double getSurfaceSpeed(){
+		return 0.0;
+	}
+	
+	//Returns the current percentage of the max surface speed
+	private double percentMaxSpeed() throws Exception{
+		if(isHighGear){
+			//Calculates for high gear
+		}else if(isLowGear){
+			//Calculates for low gear
+		}else{
+			throw new Exception(); //TODO create custom exception
+		}
+		return 0;
+	}
 
 	@Override
 	public void outputToDashboard() {

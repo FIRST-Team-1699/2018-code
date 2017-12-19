@@ -23,6 +23,11 @@ public class Constants {
 	public static final int OPERATOR_STICK_PORT = 0;
 	
 	//Limits (need better name)
-	public static final double MAX_HIGH_GEAR_SPEED = 0.0;
-	public static final double MAX_LOW_GEAR_SPEED = 0.0;
+	public static final double MAX_HIGH_GEAR_SURFACE_SPEED = 0.0;
+	public static final double MAX_LOW_GEAR_SURFACE_SPEED = 0.0;
+	public static final double MAX_HIGH_GEAR_SHAFT_SPEED = 0.0;
+	public static final double MAX_LOW_GEAR_SHAFT_SPEED = 0.0;
+	
+	//Hardware Dimensions
+	public static final double WHEEL_DIAMETER = 0.0;
 }
