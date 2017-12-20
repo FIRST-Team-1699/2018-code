@@ -56,6 +56,9 @@ public class Drive extends Command{
 	//Software controllers
 	private final PIDLoop rotatePID;
 	private final PIDLoop velocityPID;
+	private final PIDLoop visionPID;
+
+	private double visionXError;
 	
 	private Drive(){
 		super("Drive", 0);
@@ -73,9 +76,13 @@ public class Drive extends Command{
 		//Software controllers
 		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
 		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
+		visionPID = new PIDLoop("visionPID", 3, 0.0, 0.0, 0.0, null);
 		
 		//TBD may change if we end up with our own method of control
 		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
+		
+		//Vision
+		this.visionXError = 0;
 		
 		//Sets drive state
 		isHighGear = false;
@@ -167,7 +174,13 @@ public class Drive extends Command{
 	private void goalTracking() {
 		//Used to track a vision target
 		//TODO determine what type of vision system we are using and feed values into a function to determine angle
-		//*continued* then feed into gyro and turn based on that
+		//*continued* then feed into gyro and turn based on that (Will likely change)
+		
+		//Sets vision X error
+		this.visionXError = Vision.getInstance().xError(); //TODO Move to pid sensor
+		
+		//Turns robot to goal
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), visionPID.output());
 	}
 	
 	//Sets correct drive state
@@ -180,6 +193,12 @@ public class Drive extends Command{
 	//TODO make sure this is thread save if we end up going to that direction
 	public DriveState getState(){
 		return this.driveState;
+	}
+	
+	//Returns shaft rpm
+	private double getShaftRPM(){
+		portEncoder.getRate(); //Use this maybe
+		return 0.0;
 	}
 	
 	//Uses encoders to calculate speed over the floor
