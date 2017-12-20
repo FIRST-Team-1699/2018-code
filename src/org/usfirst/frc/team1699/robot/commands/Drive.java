@@ -10,6 +10,7 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -24,6 +25,9 @@ public class Drive extends Command{
 	//Shifter Constants
 	private static final boolean HIGH_GEAR = true;
 	private static final boolean LOW_GEAR = false;
+	
+	//Dead bands
+	private static final double JOYSTICK_DEADBAND = 0.05;
 	
 	//Returns an instance of the Drive class. Makes it so only one instance can ever exist.
 	public static Drive getInstance(){
@@ -58,6 +62,7 @@ public class Drive extends Command{
 	private final PIDLoop velocityPID;
 	private final PIDLoop visionPID;
 
+	//Vision values
 	private double visionXError;
 	
 	private Drive(){
@@ -159,11 +164,17 @@ public class Drive extends Command{
 		//Rotation is proportional to joystick left/right
 		//Look at up/down value, if within deadband, drive straight, else, turn at a rate proportional to left/right
 		//Need verification
+		
+		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX))){ //Need to make sure using right axis
+			//Drive straight
+		}else{
+			
+		}
 	}
 	
 	private void setVelocity() {
 		//Drives at a predetermined velocity
-		//May transform into closed loop
+		//May transform into closed loop7
 	}
 	
 	private void autonomous() {
@@ -218,6 +229,11 @@ public class Drive extends Command{
 		return 0;
 	}
 
+	//Returns true if the joystick value is within the dead band
+	private boolean withinJoystickDeadBand(double inp){
+		return inp < JOYSTICK_DEADBAND && inp > (JOYSTICK_DEADBAND * -1);
+	}
+	
 	@Override
 	public void outputToDashboard() {
 		//Puts gear state on dashboard
