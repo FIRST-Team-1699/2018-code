@@ -158,7 +158,7 @@ public class Drive extends Command{
 		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 	}
 	
-	private void closedLoop() {
+	private void closedLoop(){
 		//Closed loop - need to determine what this should entail
 		//Speed is proportional to joystick up/down
 		//Rotation is proportional to joystick left/right
@@ -167,14 +167,26 @@ public class Drive extends Command{
 		
 		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX))){ //Need to make sure using right axis
 			//Drive straight
+			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 		}else{
+			double xProp;
+			double yProp;
 			
+			if(isHighGear){
+				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_HIGH_GEAR_SURFACE_SPEED;
+				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_HIGH_GEAR_SURFACE_SPEED;
+			}else if(isLowGear){
+				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_LOW_GEAR_SURFACE_SPEED;
+				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_LOW_GEAR_SURFACE_SPEED;
+			}else{
+				setState(DriveState.OPEN_LOOP);
+			}
 		}
 	}
 	
 	private void setVelocity() {
 		//Drives at a predetermined velocity
-		//May transform into closed loop7
+		//May transform into closed loop
 	}
 	
 	private void autonomous() {
