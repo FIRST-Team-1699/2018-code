@@ -167,20 +167,27 @@ public class Drive extends Command{
 		
 		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX))){ //Need to make sure using right axis
 			//Drive straight
+			//Needs to add speed control
 			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 		}else{
+			//Finds speed drive shaft should spin
 			double xProp;
 			double yProp;
 			
+			//Might not be correct, will likely change
 			if(isHighGear){
-				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_HIGH_GEAR_SURFACE_SPEED;
-				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_HIGH_GEAR_SURFACE_SPEED;
+				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_HIGH_GEAR_SHAFT_SPEED;
+				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_HIGH_GEAR_SHAFT_SPEED;
 			}else if(isLowGear){
-				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_LOW_GEAR_SURFACE_SPEED;
-				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_LOW_GEAR_SURFACE_SPEED;
+				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_LOW_GEAR_SHAFT_SPEED;
+				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_LOW_GEAR_SHAFT_SPEED;
 			}else{
 				setState(DriveState.OPEN_LOOP);
 			}
+			
+			//Run motors for forward driving
+			//These two /\ \/ might be combined
+			//Run motors for turning
 		}
 	}
 	
@@ -226,7 +233,7 @@ public class Drive extends Command{
 	
 	//Uses encoders to calculate speed over the floor
 	private double getSurfaceSpeed(){
-		return 0.0;
+		return getShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
 	}
 	
 	//Returns the current percentage of the max surface speed
