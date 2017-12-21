@@ -64,6 +64,9 @@ public class Drive extends Command{
 
 	//Vision values
 	private double visionXError;
+
+	//Setpoints
+	private double velocitySetpoint;
 	
 	private Drive(){
 		super("Drive", 0);
@@ -194,6 +197,10 @@ public class Drive extends Command{
 	private void setVelocity() {
 		//Drives at a predetermined velocity
 		//May transform into closed loop
+		if(getSurfaceSpeed() > velocitySetpoint){
+			//Turn off until less than goal
+		}
+		//PID to goal
 	}
 	
 	private void autonomous() {
@@ -251,6 +258,14 @@ public class Drive extends Command{
 	//Returns true if the joystick value is within the dead band
 	private boolean withinJoystickDeadBand(double inp){
 		return inp < JOYSTICK_DEADBAND && inp > (JOYSTICK_DEADBAND * -1);
+	}
+	
+	private void setVelocitySetpoint(double setpoint){
+		this.velocitySetpoint = setpoint;
+	}
+	
+	private double getVelocitySetpoint(){
+		return this.velocitySetpoint;
 	}
 	
 	@Override
