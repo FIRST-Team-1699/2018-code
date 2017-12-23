@@ -82,6 +82,7 @@ public class Drive extends Command{
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
 		
 		//Software controllers
+		//TODO Give real values
 		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
 		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
 		visionPID = new PIDLoop("visionPID", 3, 0.0, 0.0, 0.0, null);
