@@ -199,9 +199,11 @@ public class Drive extends Command{
 		//Drives at a predetermined velocity
 		//May transform into closed loop
 		if(getSurfaceSpeed() > velocitySetpoint){
-			//Turn off until less than goal
+			driveTrain.arcadeDrive(velocitySetpoint - 0.05, 0);
+		}else{
+			//PID to goal
+			driveTrain.arcadeDrive(velocityPID.output(), 0);
 		}
-		//PID to goal
 	}
 	
 	private void autonomous() {
