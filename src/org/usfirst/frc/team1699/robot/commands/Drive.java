@@ -143,7 +143,7 @@ public class Drive extends Command implements AutoCommand{
 				break;
 			case GOAL_TRACKING: goalTracking();
 				break;
-			default: openLoop();
+			default: openLoop(); //Might change to invalid state exception
 				break;
 		}
 		
