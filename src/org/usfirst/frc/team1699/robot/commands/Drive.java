@@ -61,6 +61,8 @@ public class Drive extends Command implements AutoCommand{
 	private final PIDLoop rotatePID;
 	private final PIDLoop velocityPID;
 	private final PIDLoop visionPID;
+	private final PIDLoop portVelocityPID;
+	private final PIDLoop starboardVelocityPID;
 
 	//Vision values
 	private double visionXError;
@@ -90,6 +92,8 @@ public class Drive extends Command implements AutoCommand{
 		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
 		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
 		visionPID = new PIDLoop("visionPID", 3, 0.0, 0.0, 0.0, null);
+		portVelocityPID = new PIDLoop("portVelocityPID", 4, 0.0, 0.0, 0.0, null);
+		starboardVelocityPID = new PIDLoop("starboardVelocityPID", 5, 0.0, 0.0, 0.0, null);
 		
 		//TBD may change if we end up with our own method of control
 		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
@@ -206,12 +210,26 @@ public class Drive extends Command implements AutoCommand{
 	private void setVelocity() {
 		//Drives at a predetermined velocity
 		//May transform into closed loop
-		if(getSurfaceSpeed() > velocitySetpoint){
-			driveTrain.arcadeDrive(velocitySetpoint - 0.05, 0);
-		}else{
-			//PID to goal
-			driveTrain.arcadeDrive(velocityPID.output(), 0);
+		
+		//Tank drive outputs
+		double portValue;
+		double starboardValue;
+		
+		//Port Side Set
+		if(getPortSurfaceSpeed() > velocitySetpoint) {
+			portValue = velocitySetpoint - 0.05;
+		}else {
+			portValue = portVelocityPID.output();
 		}
+		
+		//Starboard Side Set
+		if(getStarboardSurfaceSpeed() > velocitySetpoint) {
+			starboardValue = velocitySetpoint - 0.05;
+		}else {
+			starboardValue = starboardVelocityPID.output();
+		}
+		
+		driveTrain.tankDrive(portValue, starboardValue);
 	}
 	
 	private void autonomous() {
@@ -296,6 +314,9 @@ public class Drive extends Command implements AutoCommand{
 	
 	private void setVelocitySetpoint(double setpoint){
 		this.velocitySetpoint = setpoint;
+		velocityPID.setGoal(setpoint);
+		portVelocityPID.setGoal(setpoint);
+		starboardVelocityPID.setGoal(setpoint);
 	}
 	
 	private double getVelocitySetpoint(){
