@@ -175,8 +175,8 @@ public class Drive extends Command{
 			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
 		}else{
 			//Finds speed drive shaft should spin
-			double xProp;
-			double yProp;
+			double xProp = 0;
+			double yProp = 0;
 			
 			//Might not be correct, will likely change
 			if(isHighGear){
@@ -192,6 +192,10 @@ public class Drive extends Command{
 			//Run motors for forward driving
 			//These two /\ \/ might be combined
 			//Run motors for turning
+			//TODO check values, test
+			velocityPID.setGoal(xProp);
+			rotatePID.setGoal(yProp);
+			driveTrain.arcadeDrive(velocityPID.output(), rotatePID.output());
 		}
 	}
 	
