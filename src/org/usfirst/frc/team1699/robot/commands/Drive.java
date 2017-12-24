@@ -3,6 +3,7 @@ package org.usfirst.frc.team1699.robot.commands;
 import org.usfirst.frc.team1699.robot.Constants;
 import org.usfirst.frc.team1699.robot.Joysticks;
 import org.usfirst.frc.team1699.robot.pid.PIDLoop;
+import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
 import org.usfirst.frc.team1699.utils.sensors.BetterEncoder;
 import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
@@ -10,14 +11,13 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class Drive extends Command{
+public class Drive extends Command implements AutoCommand{
 	
 	//One and only instance of "this"
 	private static Drive instance = new Drive();
@@ -80,6 +80,10 @@ public class Drive extends Command{
 		driveGyro = new BetterGryo(Constants.GRYO_PORT);
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
+		
+		//Encoder config
+		portEncoder.setDistancePerPulse(0.1);
+		starboardEncoder.setDistancePerPulse(0.1);
 		
 		//Software controllers
 		//TODO Give real values
@@ -239,27 +243,50 @@ public class Drive extends Command{
 		return this.driveState;
 	}
 	
-	//Returns shaft rpm
-	private double getShaftRPM(){
-		portEncoder.getRate(); //Use this maybe
-		return 0.0;
+	//Returns port shaft rpm
+	private double getPortShaftRPM(){
+		return portEncoder.getRate();
 	}
 	
-	//Uses encoders to calculate speed over the floor
-	private double getSurfaceSpeed(){
-		return getShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
+	//Returns starboard shaft rpm
+	private double getStarboardShaftRPM(){
+		return starboardEncoder.getRate();
 	}
 	
-	//Returns the current percentage of the max surface speed
-	private double percentMaxSpeed() throws Exception{
+	//Uses port encoder to calculate speed over the floor
+	private double getPortSurfaceSpeed(){
+		return getPortShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
+	}
+	
+	//Uses starboard encoder to calculate speed over the floor
+	private double getStarboardSurfaceSpeed(){
+		return getStarboardShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
+	}
+	
+	//Returns the current percentage of the max surface speed for the port side
+	private double portPercentMaxSpeed() throws Exception{
 		if(isHighGear){
 			//Calculates for high gear
+			return (getPortSurfaceSpeed() / Constants.MAX_HIGH_GEAR_SURFACE_SPEED);
 		}else if(isLowGear){
 			//Calculates for low gear
+			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
 		}else{
 			throw new Exception(); //TODO create custom exception
 		}
-		return 0;
+	}
+	
+	//Returns the current percentage of the max surface speed for the starboard side
+	private double starboardPercentMaxSpeed() throws Exception{
+		if(isHighGear){
+			//Calculates for high gear
+			return (getPortSurfaceSpeed() / Constants.MAX_HIGH_GEAR_SURFACE_SPEED);
+		}else if(isLowGear){
+			//Calculates for low gear
+			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
+		}else{
+			throw new Exception(); //TODO create custom exception
+		}
 	}
 
 	//Returns true if the joystick value is within the dead band
@@ -287,5 +314,15 @@ public class Drive extends Command{
 		driveGyro.calibrate();
 		portEncoder.reset();
 		starboardEncoder.reset();
+	}
+
+	@Override
+	public void runAuto(double distance, double speed, boolean useSensor) {
+		
+	}
+
+	@Override
+	public boolean autoCommandDone() {
+		return false;
 	}
 }
