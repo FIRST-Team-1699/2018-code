@@ -66,6 +66,7 @@ public class RawLine {
 	 * 
 	 * @return a ConfigLine made from the contents of the line
 	 */
+	@SuppressWarnings("deprecation")
 	public ConfigLine<?> toConfigLine() {
 		String section1;
 		String section2;

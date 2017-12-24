@@ -2,6 +2,7 @@ package org.usfirst.frc.team1699.robot.commands;
 
 import org.usfirst.frc.team1699.robot.Constants;
 import org.usfirst.frc.team1699.robot.Joysticks;
+import org.usfirst.frc.team1699.robot.exceptions.InvalidGearStateException;
 import org.usfirst.frc.team1699.robot.pid.PIDLoop;
 import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
@@ -240,6 +241,7 @@ public class Drive extends Command implements AutoCommand{
 	private void goalTracking() {
 		//Used to track a vision target
 		//TODO determine what type of vision system we are using and feed values into a function to determine angle
+		//Instead of angle, might just use center x and pid to it
 		//*continued* then feed into gyro and turn based on that (Will likely change)
 		
 		//Sets vision X error
@@ -290,7 +292,7 @@ public class Drive extends Command implements AutoCommand{
 			//Calculates for low gear
 			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
 		}else{
-			throw new Exception(); //TODO create custom exception
+			throw new InvalidGearStateException("Unknown gear state"); //TODO create custom exception
 		}
 	}
 	
@@ -303,7 +305,7 @@ public class Drive extends Command implements AutoCommand{
 			//Calculates for low gear
 			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
 		}else{
-			throw new Exception(); //TODO create custom exception
+			throw new InvalidGearStateException("Unkown gear state"); //TODO create custom exception
 		}
 	}
 
