@@ -9,12 +9,13 @@ import org.usfirst.frc.team1699.utils.command.Command;
 import org.usfirst.frc.team1699.utils.sensors.BetterEncoder;
 import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Joystick.AxisType;
-import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -45,10 +46,14 @@ public class Drive extends Command implements AutoCommand{
 	}
 	
 	//Hardware control
-	private final CANTalon portMaster, portSlave, starboardMaster, starboardSlave;
+	private final WPI_TalonSRX portMaster, portSlave, starboardMaster, starboardSlave;
 	private final Solenoid shifter; //May need to change to double solenoid. Only one because hardware can be used to split output.
 	private final Gyro driveGyro;
 	private final Encoder portEncoder, starboardEncoder;
+	
+	//Motor Group
+	SpeedControllerGroup lGroup;
+	SpeedControllerGroup rGroup;
 	
 	//Hardware state
 	private boolean isHighGear;
@@ -56,12 +61,11 @@ public class Drive extends Command implements AutoCommand{
 	private DriveState driveState;
 	
 	//Drive train (might change)
-	private final RobotDrive driveTrain;
+	private final DifferentialDrive driveTrain;
 	
 	//Software controllers
 	private final PIDLoop rotatePID;
 	private final PIDLoop velocityPID;
-	private final PIDLoop visionPID;
 	private final PIDLoop portVelocityPID;
 	private final PIDLoop starboardVelocityPID;
 
@@ -75,14 +79,18 @@ public class Drive extends Command implements AutoCommand{
 		super("Drive", 0);
 		
 		//Initialize hardware
-		portMaster = new CANTalon(Constants.PORT_MASTER_PORT);
-		portSlave = new CANTalon(Constants.PORT_SLAVE_PORT);
-		starboardMaster = new CANTalon(Constants.STARBOARD_MASTER_PORT);
-		starboardSlave = new CANTalon(Constants.STARBOARD_SLAVE_PORT);
+		portMaster = new WPI_TalonSRX(Constants.PORT_MASTER_PORT);
+		portSlave = new WPI_TalonSRX(Constants.PORT_SLAVE_PORT);
+		starboardMaster = new WPI_TalonSRX(Constants.STARBOARD_MASTER_PORT);
+		starboardSlave = new WPI_TalonSRX(Constants.STARBOARD_SLAVE_PORT);
 		shifter = new Solenoid(Constants.SHIFT_SOLENOID);
 		driveGyro = new BetterGryo(Constants.GRYO_PORT);
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
+		
+		//Motor Groups
+		lGroup = new SpeedControllerGroup(portMaster, portSlave);
+		rGroup = new SpeedControllerGroup(starboardMaster, starboardSlave);
 		
 		//Encoder config
 		portEncoder.setDistancePerPulse(0.1);
@@ -92,12 +100,11 @@ public class Drive extends Command implements AutoCommand{
 		//TODO Give real values
 		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
 		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
-		visionPID = new PIDLoop("visionPID", 3, 0.0, 0.0, 0.0, null);
 		portVelocityPID = new PIDLoop("portVelocityPID", 4, 0.0, 0.0, 0.0, null);
 		starboardVelocityPID = new PIDLoop("starboardVelocityPID", 5, 0.0, 0.0, 0.0, null);
 		
 		//TBD may change if we end up with our own method of control
-		driveTrain = new RobotDrive(portMaster, portSlave, starboardMaster, starboardSlave);
+		driveTrain = new DifferentialDrive(lGroup, rGroup);
 		
 		//Vision
 		this.visionXError = 0;
@@ -161,7 +168,8 @@ public class Drive extends Command implements AutoCommand{
 	private void openLoop() {
 		//Standard open loop driving
 		//TODO make sure other states do not interfere
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick());
+		//TODO test is correct axis for joystick
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY(), Joysticks.getInstance().getDriveStick().getX());
 	}
 	
 	private void straightLine() {
@@ -247,8 +255,6 @@ public class Drive extends Command implements AutoCommand{
 		//Sets vision X error
 		this.visionXError = Vision.getInstance().xError(); //TODO Move to pid sensor
 		
-		//Turns robot to goal
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), visionPID.output());
 	}
 	
 	//Sets correct drive state
@@ -258,7 +264,7 @@ public class Drive extends Command implements AutoCommand{
 	}
 	
 	//Gets correct drive state
-	//TODO make sure this is thread save if we end up going to that direction
+	//TODO make sure this is thread safe if we end up going to that direction
 	public DriveState getState(){
 		return this.driveState;
 	}
