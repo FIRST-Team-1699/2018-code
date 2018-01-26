@@ -51,4 +51,12 @@ public class Constants {
 	public static final int LIFT_ENCODER_ID_2 = 0;
 	public static final int LIFT_ENCODER_ID_3 = 0;
 	public static final int LIFT_ENCODER_ID_4 = 0;
+	
+	//Grabber Solenoid
+	public static final int GRABBER_SOLENOID_1 = 0;
+	public static final int GRABBER_SOLENOID_2 = 0;
+	
+	//Grabber motors
+	public static final int GRABBER_LEFT_ROTATE = 0;
+	public static final int GRABBER_RIGHT_ROTATE = 0;
 }
