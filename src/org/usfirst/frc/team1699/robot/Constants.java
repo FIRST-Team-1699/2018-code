@@ -24,21 +24,16 @@ public class Constants {
 	public static final int LOWER_LIMIT = 0;
 	public static final int UPPER_LIMIT = 0;
 	
-	//Solenoid constants
-	public static final int SHIFT_SOLENOID = 0;
-	
 	//Joystick constants
-	public static final int DRIVE_STICK_PORT = 0;
-	public static final int OPERATOR_STICK_PORT = 0;
+	public static final int DRIVE_STICK_PORT = 1;
+	public static final int OPERATOR_STICK_PORT = 2;
 	
-	//Limits (need better name)
-	public static final double MAX_HIGH_GEAR_SURFACE_SPEED = 0.0;
-	public static final double MAX_LOW_GEAR_SURFACE_SPEED = 0.0;
-	public static final double MAX_HIGH_GEAR_SHAFT_SPEED = 0.0;
-	public static final double MAX_LOW_GEAR_SHAFT_SPEED = 0.0;
+	//Theoretical limits
+	public static final double MAX_SURFACE_SPEED = 7437.2; //Inches per rotation
+	public static final double MAX_SHAFT_SPEED = 1239.5;
 	
 	//Hardware Dimensions
-	public static final double WHEEL_DIAMETER = 0.0;
+	public static final double WHEEL_DIAMETER = 6.0;
 	
 	//Command ID constants
 	public static final int ELEVATOR_ID = 0;
