@@ -53,12 +53,22 @@ public class Elevator extends Command implements AutoCommand{
 		//TODO create button to move lift to predetermined height
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
 			//Move elevator
-			elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());
-			elevator2.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+			if(withinLimits(liftEncoder.getDistance())){
+				//Allow movement
+				elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+				elevator2.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+			}else{
+				//Allow movement opposite of limit
+			}
 		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)){
 			//Engage Anti-Reverse
 			engageAntiReverse();
 		}
+	}
+	
+	private boolean withinLimits(double encValue){
+		//TODO populate
+		return false;
 	}
 
 	private void engageAntiReverse() {

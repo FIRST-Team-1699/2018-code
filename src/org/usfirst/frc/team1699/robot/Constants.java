@@ -71,6 +71,10 @@ public class Constants {
 	public static final double TOP_LIMIT = 0.0;
 	public static final double BOT_LIMIT = 0.0;
 	
+	//Elevator Encoder Limit
+	public static final double TOP_ELEVATOR_LIMIT = 0.0;
+	public static final double BOT_ELEVATOR_LIMIT = 0.0;
+	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;
 }
