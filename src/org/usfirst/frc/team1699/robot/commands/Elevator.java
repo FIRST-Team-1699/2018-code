@@ -6,8 +6,11 @@ import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Elevator extends Command implements AutoCommand{
 	
@@ -23,14 +26,15 @@ public class Elevator extends Command implements AutoCommand{
 	//Lift sensors
 	private final DigitalInput lowerLimit;
 	private final DigitalInput upperLimit;
-	private final Encoder liftEncoderChain;
-	private final Encoder liftEncoderCable;
+	private final Encoder liftEncoder;
 	
 	//Lift motors
 	//TODO FIX NAMES
 	private final VictorSP elevator1;
 	private final VictorSP elevator2;
-	private final VictorSP elevator3;
+	
+	//Anti-Reverse Solenoid
+	private final DoubleSolenoid antiReverse;
 	
 	private Elevator(String name, int id) {
 		super(name, id);
@@ -38,30 +42,43 @@ public class Elevator extends Command implements AutoCommand{
 		upperLimit = new DigitalInput(Constants.UPPER_LIMIT);
 		elevator1 = new VictorSP(Constants.ELEVATOR1);
 		elevator2 = new VictorSP(Constants.ELEVATOR2);
-		elevator3 = new VictorSP(Constants.ELEVATOR3);
-		liftEncoderChain = new Encoder(Constants.LIFT_ENCODER_ID_1, Constants.LIFT_ENCODER_ID_2);
-		liftEncoderCable = new Encoder(Constants.LIFT_ENCODER_ID_3, Constants.LIFT_ENCODER_ID_4);
+		liftEncoder = new Encoder(Constants.LIFT_ENCODER_ID_3, Constants.LIFT_ENCODER_ID_4);
+		antiReverse = new DoubleSolenoid(Constants.ANTI_REVERSE_SOLENOID_1, Constants.ANTI_REVERSE_SOLENOID_2);
+		
+		antiReverse.set(Value.kReverse);
 	}
 
 	@Override
 	public void run() {
 		//TODO create button to move lift to predetermined height
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
-			//Move lift up
-		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LOWER_BUTTON)) {
-			//Lower lift
+			//Move elevator
+			elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+			elevator2.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)){
+			//Engage Anti-Reverse
+			engageAntiReverse();
+		}
+	}
+
+	private void engageAntiReverse() {
+		if(antiReverse.get() == Value.kReverse){
+			antiReverse.set(Value.kForward);
+		}else if(antiReverse.get() == Value.kForward){
+			antiReverse.set(Value.kReverse);
+		}else{
+			antiReverse.set(Value.kOff);
 		}
 	}
 
 	@Override
 	public void outputToDashboard() {
-		
+		SmartDashboard.putNumber("Elevator Position", liftEncoder.getDistance());
 	}
 
 	@Override
 	public void zeroAllSensors() {
-		liftEncoderChain.reset();
-		liftEncoderCable.reset();
+		liftEncoder.reset();
 	}
 
 	@Override

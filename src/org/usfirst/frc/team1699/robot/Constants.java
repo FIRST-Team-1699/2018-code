@@ -1,7 +1,5 @@
 package org.usfirst.frc.team1699.robot;
 
-import edu.wpi.first.wpilibj.DigitalSource;
-
 public class Constants {
 
 	//Drive motor constants
@@ -13,7 +11,6 @@ public class Constants {
 	//Elevator Motor Constants
 	public static final int ELEVATOR1 = 0;
 	public static final int ELEVATOR2 = 0;
-	public static final int ELEVATOR3 = 0;
 	
 	//Sensor constants
 	public static final int GRYO_PORT = 0;
@@ -41,7 +38,9 @@ public class Constants {
 	
 	//Joystick button constants
 	public static final int LIFT_BUTTON = 0;
-	public static final int LOWER_BUTTON = 0;
+	public static final int ENGAGE_ANTIREVERSE_BUTTON = 0;
+	
+	//Elevator encoder ports
 	public static final int LIFT_ENCODER_ID_1 = 0;
 	public static final int LIFT_ENCODER_ID_2 = 0;
 	public static final int LIFT_ENCODER_ID_3 = 0;
@@ -54,4 +53,21 @@ public class Constants {
 	//Grabber motors
 	public static final int GRABBER_LEFT_ROTATE = 0;
 	public static final int GRABBER_RIGHT_ROTATE = 0;
+	
+	//Elevator Solenoids
+	public static final int ANTI_REVERSE_SOLENOID_1 = 0;
+	public static final int ANTI_REVERSE_SOLENOID_2 = 0;
+	
+	//Arm encoder constants
+	public static final int ARM_ENCODER_1 = 0;
+	public static final int ARM_ENCODER_2 = 0;
+	
+	//Grabber Button
+	public static final int GRABBER_BUTTON = 0;
+	public static final int ROTATE_UP_BUTTON = 0;
+	public static final int ROTATE_DOWN_BUTTON = 0;
+	
+	//Grabber Encoder Limits
+	public static final double TOP_LIMIT = 0.0;
+	public static final double BOT_LIMIT = 0.0;
 }

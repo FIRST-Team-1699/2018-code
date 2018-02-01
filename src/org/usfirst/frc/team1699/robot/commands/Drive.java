@@ -2,7 +2,6 @@ package org.usfirst.frc.team1699.robot.commands;
 
 import org.usfirst.frc.team1699.robot.Constants;
 import org.usfirst.frc.team1699.robot.Joysticks;
-import org.usfirst.frc.team1699.robot.exceptions.InvalidGearStateException;
 import org.usfirst.frc.team1699.robot.pid.PIDLoop;
 import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
@@ -12,8 +11,6 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Joystick.AxisType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
@@ -23,10 +20,6 @@ public class Drive extends Command implements AutoCommand{
 	
 	//One and only instance of "this"
 	private static Drive instance = new Drive();
-	
-	//Shifter Constants
-	private static final boolean HIGH_GEAR = true;
-	private static final boolean LOW_GEAR = false;
 	
 	//Dead bands
 	private static final double JOYSTICK_DEADBAND = 0.05;
@@ -42,12 +35,10 @@ public class Drive extends Command implements AutoCommand{
 		CLOSED_LOOP, //Closed loop driving scheme
 		SET_VELOCITY, //Drives at a set velocity
 		AUTONOMOUS, //Mode used during autonomous
-		GOAL_TRACKING //Used to track a goal with sensors
 	}
 	
 	//Hardware control
 	private final WPI_TalonSRX portMaster, portSlave, starboardMaster, starboardSlave;
-	private final Solenoid shifter; //May need to change to double solenoid. Only one because hardware can be used to split output.
 	private final Gyro driveGyro;
 	private final Encoder portEncoder, starboardEncoder;
 	
@@ -65,12 +56,8 @@ public class Drive extends Command implements AutoCommand{
 	
 	//Software controllers
 	private final PIDLoop rotatePID;
-	private final PIDLoop velocityPID;
 	private final PIDLoop portVelocityPID;
 	private final PIDLoop starboardVelocityPID;
-
-	//Vision values
-	private double visionXError;
 
 	//Setpoints
 	private double velocitySetpoint;
@@ -83,7 +70,6 @@ public class Drive extends Command implements AutoCommand{
 		portSlave = new WPI_TalonSRX(Constants.PORT_SLAVE_PORT);
 		starboardMaster = new WPI_TalonSRX(Constants.STARBOARD_MASTER_PORT);
 		starboardSlave = new WPI_TalonSRX(Constants.STARBOARD_SLAVE_PORT);
-		shifter = new Solenoid(Constants.SHIFT_SOLENOID);
 		driveGyro = new BetterGryo(Constants.GRYO_PORT);
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
@@ -99,39 +85,16 @@ public class Drive extends Command implements AutoCommand{
 		//Software controllers
 		//TODO Give real values
 		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
-		velocityPID = new PIDLoop("velocityPID", 2, 0.0, 0.0, 0.0, null);
 		portVelocityPID = new PIDLoop("portVelocityPID", 4, 0.0, 0.0, 0.0, null);
 		starboardVelocityPID = new PIDLoop("starboardVelocityPID", 5, 0.0, 0.0, 0.0, null);
 		
 		//TBD may change if we end up with our own method of control
 		driveTrain = new DifferentialDrive(lGroup, rGroup);
 		
-		//Vision
-		this.visionXError = 0;
-		
 		//Sets drive state
 		isHighGear = false;
 		isLowGear = false;
 		driveState = DriveState.OPEN_LOOP;
-		setHighGear();
-	}
-
-	//Puts robot in high gear
-	private void setHighGear() {
-		if(!isHighGear){
-			isHighGear = true;
-			isLowGear = false;
-			shifter.set(HIGH_GEAR);
-		}
-	}
-	
-	//Puts robot in low gear
-	private void setLowGear() {
-		if(!isLowGear){
-			isLowGear = true;
-			isHighGear = false;
-			shifter.set(LOW_GEAR);
-		}
 	}
 
 	@Override
@@ -148,20 +111,8 @@ public class Drive extends Command implements AutoCommand{
 				break;
 			case AUTONOMOUS: autonomous();
 				break;
-			case GOAL_TRACKING: goalTracking();
-				break;
 			default: openLoop(); //Might change to invalid state exception
 				break;
-		}
-		
-		//Gearing control
-		//Might want to change gear to be reliant on desired speed EX. When driver inputs a slow speed, automatically switch to low gear
-		if(Joysticks.getInstance().getDriveStick().getRawButton(1)){
-			if(isHighGear){
-				setLowGear();
-			}else if(isLowGear){
-				setHighGear();
-			}
 		}
 	}
 	
@@ -176,7 +127,7 @@ public class Drive extends Command implements AutoCommand{
 		//Used to make the robot track in a straight line
 		//TODO Test
 		rotatePID.setGoal(0);
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.output());
 	}
 	
 	private void closedLoop(){
@@ -186,33 +137,21 @@ public class Drive extends Command implements AutoCommand{
 		//Look at up/down value, if within deadband, drive straight, else, turn at a rate proportional to left/right
 		//Need verification
 		
-		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX))){ //Need to make sure using right axis
+		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getX())){ //Need to make sure using right axis
 			//Drive straight
 			//Needs to add speed control
-			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getAxis(AxisType.kThrottle), rotatePID.output());
+			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.output());
 		}else{
 			//Finds speed drive shaft should spin
 			double xProp = 0;
 			double yProp = 0;
 			
 			//Might not be correct, will likely change
-			if(isHighGear){
-				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_HIGH_GEAR_SHAFT_SPEED;
-				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_HIGH_GEAR_SHAFT_SPEED;
-			}else if(isLowGear){
-				xProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kX) * Constants.MAX_LOW_GEAR_SHAFT_SPEED;
-				yProp = Joysticks.getInstance().getDriveStick().getAxis(AxisType.kY) * Constants.MAX_LOW_GEAR_SHAFT_SPEED;
-			}else{
-				setState(DriveState.OPEN_LOOP);
-			}
 			
 			//Run motors for forward driving
 			//These two /\ \/ might be combined
 			//Run motors for turning
 			//TODO check values, test
-			velocityPID.setGoal(xProp);
-			rotatePID.setGoal(yProp);
-			driveTrain.arcadeDrive(velocityPID.output(), rotatePID.output());
 		}
 	}
 	
@@ -244,17 +183,6 @@ public class Drive extends Command implements AutoCommand{
 	private void autonomous() {
 		//Used for autonomous
 		//TODO figure out how integrate this with scripting language, or how to change scripting language
-	}
-	
-	private void goalTracking() {
-		//Used to track a vision target
-		//TODO determine what type of vision system we are using and feed values into a function to determine angle
-		//Instead of angle, might just use center x and pid to it
-		//*continued* then feed into gyro and turn based on that (Will likely change)
-		
-		//Sets vision X error
-		this.visionXError = Vision.getInstance().xError(); //TODO Move to pid sensor
-		
 	}
 	
 	//Sets correct drive state
@@ -290,29 +218,13 @@ public class Drive extends Command implements AutoCommand{
 	}
 	
 	//Returns the current percentage of the max surface speed for the port side
-	private double portPercentMaxSpeed() throws Exception{
-		if(isHighGear){
-			//Calculates for high gear
-			return (getPortSurfaceSpeed() / Constants.MAX_HIGH_GEAR_SURFACE_SPEED);
-		}else if(isLowGear){
-			//Calculates for low gear
-			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
-		}else{
-			throw new InvalidGearStateException("Unknown gear state"); //TODO create custom exception
-		}
+	private double portPercentMaxSpeed(){
+		return (getPortSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
 	}
 	
 	//Returns the current percentage of the max surface speed for the starboard side
 	private double starboardPercentMaxSpeed() throws Exception{
-		if(isHighGear){
-			//Calculates for high gear
-			return (getPortSurfaceSpeed() / Constants.MAX_HIGH_GEAR_SURFACE_SPEED);
-		}else if(isLowGear){
-			//Calculates for low gear
-			return (getPortSurfaceSpeed() / Constants.MAX_LOW_GEAR_SURFACE_SPEED);
-		}else{
-			throw new InvalidGearStateException("Unkown gear state"); //TODO create custom exception
-		}
+		return (getStarboardSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
 	}
 
 	//Returns true if the joystick value is within the dead band
@@ -322,7 +234,6 @@ public class Drive extends Command implements AutoCommand{
 	
 	private void setVelocitySetpoint(double setpoint){
 		this.velocitySetpoint = setpoint;
-		velocityPID.setGoal(setpoint);
 		portVelocityPID.setGoal(setpoint);
 		starboardVelocityPID.setGoal(setpoint);
 	}
