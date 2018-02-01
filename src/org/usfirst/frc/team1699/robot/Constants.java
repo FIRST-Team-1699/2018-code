@@ -70,4 +70,7 @@ public class Constants {
 	//Grabber Encoder Limits
 	public static final double TOP_LIMIT = 0.0;
 	public static final double BOT_LIMIT = 0.0;
+	
+	//Field Dimensions
+	public static final int DISTANCE_TO_BASELINE = 0;
 }

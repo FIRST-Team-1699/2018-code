@@ -34,7 +34,6 @@ public class Drive extends Command implements AutoCommand{
 		STRAIGHT_LINE, //Drives at a set angle
 		CLOSED_LOOP, //Closed loop driving scheme
 		SET_VELOCITY, //Drives at a set velocity
-		AUTONOMOUS, //Mode used during autonomous
 	}
 	
 	//Hardware control
@@ -55,9 +54,7 @@ public class Drive extends Command implements AutoCommand{
 	private final DifferentialDrive driveTrain;
 	
 	//Software controllers
-	private final PIDLoop rotatePID;
-	private final PIDLoop portVelocityPID;
-	private final PIDLoop starboardVelocityPID;
+	private final PIDLoop rotatePID, portVelocityPID, starboardVelocityPID;
 
 	//Setpoints
 	private double velocitySetpoint;
@@ -108,8 +105,6 @@ public class Drive extends Command implements AutoCommand{
 			case CLOSED_LOOP: closedLoop();
 				break;
 			case SET_VELOCITY: setVelocity();
-				break;
-			case AUTONOMOUS: autonomous();
 				break;
 			default: openLoop(); //Might change to invalid state exception
 				break;
@@ -180,15 +175,38 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.tankDrive(portValue, starboardValue);
 	}
 	
-	private void autonomous() {
-		//Used for autonomous
-		//TODO figure out how integrate this with scripting language, or how to change scripting language
+	@Override
+	public void runAuto(double distance, double speed, boolean useSensor) {
+		rotatePID.setGoal(0);
+		while(distance < portEncoder.getDistance()){
+			driveTrain.arcadeDrive(speed, rotatePID.output());
+		}
+		driveTrain.arcadeDrive(0, 0);
+	}
+
+	@Override
+	public boolean autoCommandDone() {
+		return false;
 	}
 	
 	//Sets correct drive state
 	//TODO make sure this is thread save if we end up going to that direction
 	public void setState(DriveState state){
 		this.driveState = state;
+	}
+	
+	@Override
+	public void outputToDashboard() {
+		//Puts gear state on dashboard
+		SmartDashboard.putBoolean("High Gear:", isHighGear);
+		SmartDashboard.putBoolean("Low Gear:", isLowGear);
+	}
+
+	@Override
+	public void zeroAllSensors() {
+		driveGyro.calibrate();
+		portEncoder.reset();
+		starboardEncoder.reset();
 	}
 	
 	//Gets correct drive state
@@ -216,12 +234,12 @@ public class Drive extends Command implements AutoCommand{
 	private double getStarboardSurfaceSpeed(){
 		return getStarboardShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
 	}
-	
+		
 	//Returns the current percentage of the max surface speed for the port side
 	private double portPercentMaxSpeed(){
 		return (getPortSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
 	}
-	
+		
 	//Returns the current percentage of the max surface speed for the starboard side
 	private double starboardPercentMaxSpeed() throws Exception{
 		return (getStarboardSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
@@ -231,38 +249,14 @@ public class Drive extends Command implements AutoCommand{
 	private boolean withinJoystickDeadBand(double inp){
 		return inp < JOYSTICK_DEADBAND && inp > (JOYSTICK_DEADBAND * -1);
 	}
-	
+		
 	private void setVelocitySetpoint(double setpoint){
 		this.velocitySetpoint = setpoint;
 		portVelocityPID.setGoal(setpoint);
 		starboardVelocityPID.setGoal(setpoint);
 	}
-	
+		
 	private double getVelocitySetpoint(){
 		return this.velocitySetpoint;
-	}
-	
-	@Override
-	public void outputToDashboard() {
-		//Puts gear state on dashboard
-		SmartDashboard.putBoolean("High Gear:", isHighGear);
-		SmartDashboard.putBoolean("Low Gear:", isLowGear);
-	}
-
-	@Override
-	public void zeroAllSensors() {
-		driveGyro.calibrate();
-		portEncoder.reset();
-		starboardEncoder.reset();
-	}
-
-	@Override
-	public void runAuto(double distance, double speed, boolean useSensor) {
-		
-	}
-
-	@Override
-	public boolean autoCommandDone() {
-		return false;
 	}
 }
