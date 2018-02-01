@@ -6,8 +6,15 @@ public class LeftSwitch implements AutoMode{
 
 	@Override
 	public void runAuto() {
-		// TODO Auto-generated method stub
-		
+		//Basic code for switch selection. Will change
+		String gameData;
+		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		if(gameData.charAt(0) == 'L')
+		{
+			//Put left auto code here
+		} else {
+			//Put right auto code here
+		}	
 	}
 
 }
