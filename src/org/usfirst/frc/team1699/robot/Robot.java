@@ -1,4 +1,3 @@
-
 package org.usfirst.frc.team1699.robot;
 
 import org.usfirst.frc.team1699.robot.autoModes.BaseLine;
