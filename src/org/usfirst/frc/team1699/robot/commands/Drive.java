@@ -115,7 +115,7 @@ public class Drive extends Command implements AutoCommand{
 		//Standard open loop driving
 		//TODO make sure other states do not interfere
 		//TODO test is correct axis for joystick
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY(), Joysticks.getInstance().getDriveStick().getX());
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1, Joysticks.getInstance().getDriveStick().getX());
 	}
 	
 	private void straightLine() {

@@ -22,21 +22,22 @@ public class CubeGrabber extends Command implements AutoCommand{
 		return instance;
 	}
 	
-	private final DoubleSolenoid opener;
+	//private final DoubleSolenoid opener;
 	
 	private final VictorSP leftRotate;
-	private final VictorSP rightRotate;
+	//private final VictorSP rightRotate;
 	
 	private final Encoder rotateEncoder;
 	
 	private CubeGrabber(String name, int id) {
 		super(name, id);
-		opener = new DoubleSolenoid(Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
+		//TODO Uncomment
+		//opener = new DoubleSolenoid(Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
 		leftRotate = new VictorSP(Constants.GRABBER_LEFT_ROTATE);
-		rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
+		//rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
 		rotateEncoder = new Encoder(Constants.ARM_ENCODER_1, Constants.ARM_ENCODER_2);
 		
-		opener.set(Value.kReverse);
+		//opener.set(Value.kReverse);
 	}
 
 	@Override
@@ -49,24 +50,24 @@ public class CubeGrabber extends Command implements AutoCommand{
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_UP_BUTTON)){
 			if(rotateEncoder.getDistance() > Constants.LOWER_LIMIT){
 				leftRotate.set(0.4);
-				rightRotate.set(-0.4);
+				//rightRotate.set(-0.4);
 			}
 		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_DOWN_BUTTON)){
 			if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT){
 				leftRotate.set(-0.4);
-				rightRotate.set(0.4);
+				//rightRotate.set(0.4);
 			}
 		}
 	}
 	
 	private void toggleClawOpen(){
-		if(opener.get() == Value.kReverse){
-			opener.set(Value.kForward);
-		}else if(opener.get() == Value.kForward){
-			opener.set(Value.kReverse);
-		}else{
-			opener.set(Value.kOff);
-		}
+//		if(opener.get() == Value.kReverse){
+//			opener.set(Value.kForward);
+//		}else if(opener.get() == Value.kForward){
+//			opener.set(Value.kReverse);
+//		}else{
+//			opener.set(Value.kOff);
+//		}
 	}
 
 	@Override
