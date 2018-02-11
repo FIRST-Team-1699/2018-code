@@ -34,12 +34,15 @@ public class Elevator extends Command implements AutoCommand{
 	//Anti-Reverse Solenoid
 	private final DoubleSolenoid antiReverse;
 	
+	//Joystick Utils
+	private boolean released = true;
+	
 	private Elevator(String name, int id) {
 		super(name, id);
 		elevator1 = new VictorSP(Constants.ELEVATOR1);
 		elevator2 = new VictorSP(Constants.ELEVATOR2);
 		liftEncoder = new Encoder(Constants.LIFT_ENCODER_ID_3, Constants.LIFT_ENCODER_ID_4);
-		antiReverse = new DoubleSolenoid(Constants.ANTI_REVERSE_SOLENOID_1, Constants.ANTI_REVERSE_SOLENOID_2);
+		antiReverse = new DoubleSolenoid(Constants.PCM_ID, Constants.ANTI_REVERSE_SOLENOID_1, Constants.ANTI_REVERSE_SOLENOID_2);
 		
 		antiReverse.set(Value.kReverse);
 	}
@@ -47,10 +50,7 @@ public class Elevator extends Command implements AutoCommand{
 	@Override
 	public void run() {
 		//TODO create button to move lift to predetermined height
-		//System.out.println(Joysticks.getInstance().getOperatorStick().getRawButton(11));
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
-			System.out.println("Im here");
-			System.out.println(Joysticks.getInstance().getOperatorStick().getThrottle());
 			//Move elevator
 			if(withinLimits(liftEncoder.getDistance())){
 				//Allow movement
@@ -63,10 +63,16 @@ public class Elevator extends Command implements AutoCommand{
 			elevator1.set(0);
 			elevator2.set(0);
 		}
-			
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)){
+		
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
 			//Engage Anti-Reverse
+			System.out.println("Fire Anti-Reverse");
 			engageAntiReverse();
+			released = false;
+		}
+		
+		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)) {
+			released = true;
 		}
 	}
 	

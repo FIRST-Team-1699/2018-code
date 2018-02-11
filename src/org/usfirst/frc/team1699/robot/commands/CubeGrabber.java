@@ -22,17 +22,20 @@ public class CubeGrabber extends Command implements AutoCommand{
 		return instance;
 	}
 	
-	//private final DoubleSolenoid opener;
+	private final DoubleSolenoid opener;
 	
 	private final VictorSP leftRotate;
 	//private final VictorSP rightRotate;
 	
 	private final Encoder rotateEncoder;
 	
+	//Joystick Utils
+	private boolean released = true;
+	
 	private CubeGrabber(String name, int id) {
 		super(name, id);
 		//TODO Uncomment
-		//opener = new DoubleSolenoid(Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
+		opener = new DoubleSolenoid(Constants.PCM_ID, Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
 		leftRotate = new VictorSP(Constants.GRABBER_LEFT_ROTATE);
 		//rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
 		rotateEncoder = new Encoder(Constants.ARM_ENCODER_1, Constants.ARM_ENCODER_2);
@@ -43,8 +46,16 @@ public class CubeGrabber extends Command implements AutoCommand{
 	@Override
 	public void run() {
 		//TODO Make it move
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON)){
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON) && released){
+			//toggleClawOpen();
+			System.out.println("Fire Claw");
 			toggleClawOpen();
+			
+			released = false;
+		}
+		
+		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON)) {
+			released = true;
 		}
 		
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_UP_BUTTON)){
@@ -61,13 +72,13 @@ public class CubeGrabber extends Command implements AutoCommand{
 	}
 	
 	private void toggleClawOpen(){
-//		if(opener.get() == Value.kReverse){
-//			opener.set(Value.kForward);
-//		}else if(opener.get() == Value.kForward){
-//			opener.set(Value.kReverse);
-//		}else{
-//			opener.set(Value.kOff);
-//		}
+		if(opener.get() == Value.kReverse){
+			opener.set(Value.kForward);
+		}else if(opener.get() == Value.kForward){
+			opener.set(Value.kReverse);
+		}else{
+			opener.set(Value.kOff);
+		}
 	}
 
 	@Override

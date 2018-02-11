@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends IterativeRobot {
 	
 	//Compressor
-	//private Compressor c;
+	private Compressor compressor;
 	
 	//Auto Chooser
 	private SendableChooser<AutoMode> autoChooser;
@@ -25,8 +25,9 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		//Compressor init
 		//TODO Uncomment
-		//c = new Compressor(0);
-		//c.setClosedLoopControl(true);
+		compressor = new Compressor(Constants.PCM_ID);
+		compressor.setClosedLoopControl(true);
+		compressor.start();
 		
 		//Init for commands
 		Drive.getInstance();
@@ -57,6 +58,8 @@ public class Robot extends IterativeRobot {
 		Drive.getInstance().outputToDashboard();
 		CubeGrabber.getInstance().outputToDashboard();
 		Elevator.getInstance().outputToDashboard();
+		
+		
 	}
 
 	@Override

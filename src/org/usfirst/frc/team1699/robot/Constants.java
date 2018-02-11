@@ -9,8 +9,8 @@ public class Constants {
 	public static final int STARBOARD_SLAVE_PORT = 13;
 	
 	//Elevator Motor Constants
-	public static final int ELEVATOR1 = 9;
-	public static final int ELEVATOR2 = 8;
+	public static final int ELEVATOR1 = 8;
+	public static final int ELEVATOR2 = 7;
 	
 	//Sensor constants
 	public static final int GRYO_PORT = 0;
@@ -22,8 +22,8 @@ public class Constants {
 	public static final int UPPER_LIMIT = 0;
 	
 	//Joystick constants
-	public static final int DRIVE_STICK_PORT = 0;
-	public static final int OPERATOR_STICK_PORT = 1;
+	public static final int DRIVE_STICK_PORT = 1;
+	public static final int OPERATOR_STICK_PORT = 0;
 	
 	//Theoretical limits
 	public static final double MAX_SURFACE_SPEED = 7437.2; //Inches per rotation
@@ -37,8 +37,8 @@ public class Constants {
 	public static final int CUBE_GRABBER_ID = 79;
 	
 	//Joystick button constants
-	public static final int LIFT_BUTTON = 2;
-	public static final int ENGAGE_ANTIREVERSE_BUTTON = 0;
+	public static final int LIFT_BUTTON = 1;
+	public static final int ENGAGE_ANTIREVERSE_BUTTON = 7;
 	
 	//Elevator encoder ports
 	public static final int LIFT_ENCODER_ID_1 = 19;
@@ -46,26 +46,23 @@ public class Constants {
 	public static final int LIFT_ENCODER_ID_3 = 21;
 	public static final int LIFT_ENCODER_ID_4 = 22;
 	
-	
-	
-	
 	//Grabber motors
-	public static final int GRABBER_LEFT_ROTATE = 6;
+	public static final int GRABBER_LEFT_ROTATE = 9;
 	//public static final int GRABBER_RIGHT_ROTATE = 7;
 	
 	//Solenoids
 	public static final int ANTI_REVERSE_SOLENOID_1 = 7;
 	public static final int ANTI_REVERSE_SOLENOID_2 = 6;
 	
-	public static final int GRABBER_SOLENOID_1 = 3;
-	public static final int GRABBER_SOLENOID_2 = 5;
+	public static final int GRABBER_SOLENOID_1 = 2;
+	public static final int GRABBER_SOLENOID_2 = 3;
 	
 	//Arm encoder constants
 	public static final int ARM_ENCODER_1 = 29;
 	public static final int ARM_ENCODER_2 = 30;
 	
 	//Grabber Button
-	public static final int GRABBER_BUTTON = 0;
+	public static final int GRABBER_BUTTON = 2;
 	public static final int ROTATE_UP_BUTTON = 0;
 	public static final int ROTATE_DOWN_BUTTON = 0;
 	
@@ -79,4 +76,7 @@ public class Constants {
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;
+	
+	//PCM Constants
+	public static final int PCM_ID = 1;
 }
