@@ -40,7 +40,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		//rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
 		rotateEncoder = new Encoder(Constants.ARM_ENCODER_1, Constants.ARM_ENCODER_2);
 		
-		//opener.set(Value.kReverse);
+		opener.set(Value.kReverse);
 	}
 
 	@Override
@@ -50,7 +50,6 @@ public class CubeGrabber extends Command implements AutoCommand{
 			//toggleClawOpen();
 			System.out.println("Fire Claw");
 			toggleClawOpen();
-			
 			released = false;
 		}
 		
@@ -59,15 +58,19 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 		
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_UP_BUTTON)){
-			if(rotateEncoder.getDistance() > Constants.LOWER_LIMIT){
-				leftRotate.set(0.4);
-				//rightRotate.set(-0.4);
-			}
+//			if(rotateEncoder.getDistance() > Constants.LOWER_LIMIT){
+//				leftRotate.set(0.4);
+//				//rightRotate.set(-0.4);
+//			}
+			leftRotate.set(0.6);
 		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_DOWN_BUTTON)){
-			if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT){
-				leftRotate.set(-0.4);
-				//rightRotate.set(0.4);
-			}
+//			if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT){
+//				leftRotate.set(-0.4);
+//				//rightRotate.set(0.4);
+//			}
+			leftRotate.set(-0.6);
+		}else{
+			leftRotate.set(0);
 		}
 	}
 	
@@ -76,7 +79,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 			opener.set(Value.kForward);
 		}else if(opener.get() == Value.kForward){
 			opener.set(Value.kReverse);
-		}else{
+		}else {
 			opener.set(Value.kOff);
 		}
 	}

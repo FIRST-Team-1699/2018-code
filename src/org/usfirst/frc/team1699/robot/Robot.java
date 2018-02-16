@@ -28,6 +28,7 @@ public class Robot extends IterativeRobot {
 		compressor = new Compressor(Constants.PCM_ID);
 		compressor.setClosedLoopControl(true);
 		compressor.start();
+		//compressor.stop();
 		
 		//Init for commands
 		Drive.getInstance();

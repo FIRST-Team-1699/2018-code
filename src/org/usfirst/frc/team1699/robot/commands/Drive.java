@@ -197,9 +197,8 @@ public class Drive extends Command implements AutoCommand{
 	
 	@Override
 	public void outputToDashboard() {
-		//Puts gear state on dashboard
-		SmartDashboard.putBoolean("High Gear:", isHighGear);
-		SmartDashboard.putBoolean("Low Gear:", isLowGear);
+		//Puts rotation on dashboard
+		SmartDashboard.putNumber("Rotation", driveGyro.getAngle() % 360);
 	}
 
 	@Override

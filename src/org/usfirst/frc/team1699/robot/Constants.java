@@ -63,8 +63,8 @@ public class Constants {
 	
 	//Grabber Button
 	public static final int GRABBER_BUTTON = 2;
-	public static final int ROTATE_UP_BUTTON = 0;
-	public static final int ROTATE_DOWN_BUTTON = 0;
+	public static final int ROTATE_UP_BUTTON = 12;
+	public static final int ROTATE_DOWN_BUTTON = 11;
 	
 	//Grabber Encoder Limits
 	public static final double TOP_LIMIT = 0.0;
