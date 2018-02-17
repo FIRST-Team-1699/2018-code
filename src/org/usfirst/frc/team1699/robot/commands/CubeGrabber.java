@@ -32,6 +32,10 @@ public class CubeGrabber extends Command implements AutoCommand{
 	//Joystick Utils
 	private boolean released = true;
 	
+	//motor limits
+	private double upper_motor_limit = 1;
+	private double lower_motor_limit = -1;
+		
 	private CubeGrabber(String name, int id) {
 		super(name, id);
 		//TODO Uncomment
@@ -57,19 +61,23 @@ public class CubeGrabber extends Command implements AutoCommand{
 			released = true;
 		}
 		
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_UP_BUTTON)){
-//			if(rotateEncoder.getDistance() > Constants.LOWER_LIMIT){
-//				leftRotate.set(0.4);
-//				//rightRotate.set(-0.4);
-//			}
-			leftRotate.set(0.6);
-		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ROTATE_DOWN_BUTTON)){
-//			if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT){
-//				leftRotate.set(-0.4);
-//				//rightRotate.set(0.4);
-//			}
-			leftRotate.set(-0.6);
-		}else{
+		checkLimits();
+	}
+	
+	private void checkLimits() {
+		if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT) {
+			upper_motor_limit = 0;
+		}else if(rotateEncoder.getDistance() < Constants.LOWER_LIMIT) {
+			lower_motor_limit = 0;
+		}else {
+			upper_motor_limit = 1;
+			lower_motor_limit = -1;
+		}
+		
+		if(Joysticks.getInstance().getOperatorStick().getY() > lower_motor_limit &&
+				Joysticks.getInstance().getOperatorStick().getY() < upper_motor_limit) {
+			leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
+		}else {
 			leftRotate.set(0);
 		}
 	}
