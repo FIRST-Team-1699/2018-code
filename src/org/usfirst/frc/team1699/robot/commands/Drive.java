@@ -2,7 +2,7 @@ package org.usfirst.frc.team1699.robot.commands;
 
 import org.usfirst.frc.team1699.robot.Constants;
 import org.usfirst.frc.team1699.robot.Joysticks;
-import org.usfirst.frc.team1699.robot.pid.PIDLoop;
+import org.usfirst.frc.team1699.robot.pid.SynchronousPIDF;
 import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
 import org.usfirst.frc.team1699.utils.sensors.BetterEncoder;
@@ -54,7 +54,7 @@ public class Drive extends Command implements AutoCommand{
 	private final DifferentialDrive driveTrain;
 	
 	//Software controllers
-	private final PIDLoop rotatePID, portVelocityPID, starboardVelocityPID;
+	private final SynchronousPIDF rotatePID, portVelocityPID, starboardVelocityPID;
 
 	//Setpoints
 	private double velocitySetpoint;
@@ -81,9 +81,9 @@ public class Drive extends Command implements AutoCommand{
 		
 		//Software controllers
 		//TODO Give real values
-		rotatePID = new PIDLoop("rotatePID", 1, 0.0, 0.0, 0.0, null);
-		portVelocityPID = new PIDLoop("portVelocityPID", 4, 0.0, 0.0, 0.0, null);
-		starboardVelocityPID = new PIDLoop("starboardVelocityPID", 5, 0.0, 0.0, 0.0, null);
+		rotatePID = new SynchronousPIDF(0.0, 0.0, 0.0);
+		portVelocityPID = new SynchronousPIDF(0.0, 0.0, 0.0);
+		starboardVelocityPID = new SynchronousPIDF(0.0, 0.0, 0.0);
 		
 		//TBD may change if we end up with our own method of control
 		driveTrain = new DifferentialDrive(lGroup, rGroup);
@@ -121,8 +121,8 @@ public class Drive extends Command implements AutoCommand{
 	private void straightLine() {
 		//Used to make the robot track in a straight line
 		//TODO Test
-		rotatePID.setGoal(0);
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.output());
+		rotatePID.setSetpoint(0);
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.get());
 	}
 	
 	private void closedLoop(){
@@ -135,7 +135,7 @@ public class Drive extends Command implements AutoCommand{
 		if(withinJoystickDeadBand(Joysticks.getInstance().getDriveStick().getX())){ //Need to make sure using right axis
 			//Drive straight
 			//Needs to add speed control
-			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.output());
+			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.get());
 		}else{
 			//Finds speed drive shaft should spin
 			double xProp = 0;
@@ -162,14 +162,14 @@ public class Drive extends Command implements AutoCommand{
 		if(getPortSurfaceSpeed() > velocitySetpoint) {
 			portValue = velocitySetpoint - 0.05;
 		}else {
-			portValue = portVelocityPID.output();
+			portValue = portVelocityPID.get();
 		}
 		
 		//Starboard Side Set
 		if(getStarboardSurfaceSpeed() > velocitySetpoint) {
 			starboardValue = velocitySetpoint - 0.05;
 		}else {
-			starboardValue = starboardVelocityPID.output();
+			starboardValue = starboardVelocityPID.get();
 		}
 		
 		driveTrain.tankDrive(portValue, starboardValue);
@@ -177,9 +177,9 @@ public class Drive extends Command implements AutoCommand{
 	
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
-		rotatePID.setGoal(0);
+		rotatePID.setSetpoint(0);
 		while(distance < portEncoder.getDistance()){
-			driveTrain.arcadeDrive(speed, rotatePID.output());
+			driveTrain.arcadeDrive(speed, rotatePID.get());
 		}
 		driveTrain.arcadeDrive(0, 0);
 	}
@@ -251,8 +251,8 @@ public class Drive extends Command implements AutoCommand{
 		
 	private void setVelocitySetpoint(double setpoint){
 		this.velocitySetpoint = setpoint;
-		portVelocityPID.setGoal(setpoint);
-		starboardVelocityPID.setGoal(setpoint);
+		portVelocityPID.setSetpoint(setpoint);
+		starboardVelocityPID.setSetpoint(setpoint);
 	}
 		
 	private double getVelocitySetpoint(){
