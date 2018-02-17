@@ -76,6 +76,11 @@ public class Constants {
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;
+	public static final int DISTANCE_TO_SWITCH = 0;
+	
+	//Elevator auto encoder constants
+	public static final double AUTO_SWITCH_UPPER_LIMIT = 0.0;
+	public static final double AUTO_SWITCH_LOWER_LIMIT = 0.0;
 	
 	//PCM Constants
 	public static final int PCM_ID = 1;
