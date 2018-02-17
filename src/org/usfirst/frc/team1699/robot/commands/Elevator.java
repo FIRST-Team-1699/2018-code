@@ -51,17 +51,9 @@ public class Elevator extends Command implements AutoCommand{
 	public void run() {
 		//TODO create button to move lift to predetermined height
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
-			//Move elevator
-			if(withinLimits(liftEncoder.getDistance())){
-				//Allow movement
-				elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());
-				elevator2.set(Joysticks.getInstance().getOperatorStick().getThrottle());
-			}else{
-				//Allow movement opposite of limit
-			}
+			checkLimits();
 		}else {
-			elevator1.set(0);
-			elevator2.set(0);
+			setElevator(0);
 		}
 		
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
@@ -77,8 +69,62 @@ public class Elevator extends Command implements AutoCommand{
 	}
 	
 	private boolean withinLimits(double encValue){
-		//TODO populate
-		return true;
+		if(encValue < Constants.TOP_ELEVATOR_LIMIT && encValue > Constants.BOT_ELEVATOR_LIMIT) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//compare value of encValue to TOP_ELEVATOR_LIMIT
+	private boolean checkUpperLimit(double encValue) {
+		if(encValue > Constants.TOP_ELEVATOR_LIMIT) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//compare value of encValue to BOT_ELEVATOR_LIMIT
+	private boolean checkLowerLimit(double encValue) {
+		if(encValue < Constants.BOT_ELEVATOR_LIMIT) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
+	//set speed of both elevator motors to double speed
+	private void setElevator(double speed) {
+		elevator1.set(speed);
+		elevator2.set(speed);
+	}
+	
+	//ensure limits aren't broken
+	private void checkLimits() {
+		//Move elevator
+		if(withinLimits(liftEncoder.getDistance())){
+			//Allow movement
+			setElevator(Joysticks.getInstance().getOperatorStick().getThrottle());
+			
+		}else{
+			//allow movement down if upper limit broken
+			if(checkUpperLimit(liftEncoder.getDistance())) {
+				if(Joysticks.getInstance().getOperatorStick().getThrottle() < 0) {
+					setElevator(Joysticks.getInstance().getOperatorStick().getThrottle());
+				}else {
+					setElevator(0);
+				}
+			}
+			//allow movement up if lower limit broken
+			if(checkLowerLimit(liftEncoder.getDistance())) {
+				if(Joysticks.getInstance().getOperatorStick().getThrottle() > 0) {
+					setElevator(Joysticks.getInstance().getOperatorStick().getThrottle());
+				}else {
+					setElevator(0);
+				}
+			}
+		}
 	}
 
 	private void engageAntiReverse() {
