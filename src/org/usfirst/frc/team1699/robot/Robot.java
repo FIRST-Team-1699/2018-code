@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.CameraServer;
 
 public class Robot extends IterativeRobot {
 	
@@ -30,6 +31,9 @@ public class Robot extends IterativeRobot {
 		compressor.start();
 		//compressor.stop();
 		
+		//start camera
+		CameraServer.getInstance().startAutomaticCapture();
+		
 		//Init for commands
 		Drive.getInstance();
 		CubeGrabber.getInstance();
@@ -39,6 +43,7 @@ public class Robot extends IterativeRobot {
 		Drive.getInstance().outputToDashboard();
 		CubeGrabber.getInstance().outputToDashboard();
 		Elevator.getInstance().outputToDashboard();
+		
 	}
 
 	
