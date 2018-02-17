@@ -175,6 +175,9 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.tankDrive(portValue, starboardValue);
 	}
 	
+	//auto utils
+	
+	
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
@@ -183,11 +186,13 @@ public class Drive extends Command implements AutoCommand{
 		}
 		driveTrain.arcadeDrive(0, 0);
 	}
-
+	
 	@Override
 	public boolean autoCommandDone() {
 		return false;
 	}
+	
+	//end auto utils
 	
 	//Sets correct drive state
 	//TODO make sure this is thread save if we end up going to that direction

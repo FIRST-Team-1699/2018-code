@@ -104,7 +104,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
-		
+		toggleClawOpen();
 	}
 
 	@Override

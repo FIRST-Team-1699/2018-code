@@ -68,8 +68,8 @@ public class Elevator extends Command implements AutoCommand{
 		}
 	}
 	
-	private boolean withinLimits(double encValue){
-		if(encValue < Constants.TOP_ELEVATOR_LIMIT && encValue > Constants.BOT_ELEVATOR_LIMIT) {
+	private boolean withinLimits(double encValue, double upperLimit, double lowerLimit){
+		if(encValue < upperLimit && encValue > lowerLimit) {
 			return true;
 		}else {
 			return false;
@@ -103,7 +103,7 @@ public class Elevator extends Command implements AutoCommand{
 	//ensure limits aren't broken
 	private void checkLimits() {
 		//Move elevator
-		if(withinLimits(liftEncoder.getDistance())){
+		if(withinLimits(liftEncoder.getDistance(), Constants.TOP_ELEVATOR_LIMIT, Constants.BOT_ELEVATOR_LIMIT)){
 			//Allow movement
 			setElevator(Joysticks.getInstance().getOperatorStick().getThrottle());
 			
@@ -149,7 +149,11 @@ public class Elevator extends Command implements AutoCommand{
 
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
-		
+		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
+			setElevator(speed);
+		}else {
+			setElevator(0);
+		}
 	}
 
 	@Override
