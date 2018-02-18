@@ -59,13 +59,21 @@ public class CubeGrabber extends Command implements AutoCommand{
 			released = true;
 		}
 		
-		checkLimits();
+		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
+		
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
+			leftRotate.set(1);
+		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
+			leftRotate.set(-1);
+		}else{
+			leftRotate.set(0);
+		}
 	}
 	
-	private void checkLimits() {
-		if(rotateEncoder.getDistance() > Constants.UPPER_LIMIT) {
+	private void checkLimits(double upperLimit, double lowerLimit) {
+		if(rotateEncoder.getDistance() > upperLimit) {
 			upper_motor_limit = 0;
-		}else if(rotateEncoder.getDistance() < Constants.LOWER_LIMIT) {
+		}else if(rotateEncoder.getDistance() < lowerLimit) {
 			lower_motor_limit = 0;
 		}else {
 			upper_motor_limit = 1;
@@ -79,14 +87,8 @@ public class CubeGrabber extends Command implements AutoCommand{
 //			leftRotate.set(0);
 //		}
 		
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
-			leftRotate.set(1);
-		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
-			leftRotate.set(-1);
-		}else{
-			leftRotate.set(0);
-		}
 	}
+	
 	
 	private void toggleClawOpen(){
 		if(opener.get() == Value.kReverse){
@@ -110,8 +112,18 @@ public class CubeGrabber extends Command implements AutoCommand{
 	
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
+		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
+		if(speed > lower_motor_limit && speed < upper_motor_limit) {
+			leftRotate.set(speed);
+		}else {
+			leftRotate.set(0);
+		}
+	}
+	
+	public void dropAuto() {
 		toggleClawOpen();
 	}
+		
 
 	@Override
 	public boolean autoCommandDone() {

@@ -51,7 +51,7 @@ public class Elevator extends Command implements AutoCommand{
 	public void run() {
 		//TODO create button to move lift to predetermined height
 //		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
-//			checkLimits();
+//			checkLimits(Constants.TOP_ELEVATOR_LIMIT, Constants.BOT_ELEVATOR_LIMIT);
 //		}else {
 //			setElevator(0);
 //		}
@@ -109,9 +109,9 @@ public class Elevator extends Command implements AutoCommand{
 	}
 	
 	//ensure limits aren't broken
-	private void checkLimits() {
+	private void checkLimits(double upperLimit, double lowerLimit) {
 		//Move elevator
-		if(withinLimits(liftEncoder.getDistance(), Constants.TOP_ELEVATOR_LIMIT, Constants.BOT_ELEVATOR_LIMIT)){
+		if(withinLimits(liftEncoder.getDistance(), upperLimit, lowerLimit)){
 			//Allow movement
 			setElevator(Joysticks.getInstance().getOperatorStick().getThrottle());
 			
