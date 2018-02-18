@@ -50,21 +50,29 @@ public class Elevator extends Command implements AutoCommand{
 	@Override
 	public void run() {
 		//TODO create button to move lift to predetermined height
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
-			checkLimits();
-		}else {
-			setElevator(0);
-		}
+//		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.LIFT_BUTTON)) {
+//			checkLimits();
+//		}else {
+//			setElevator(0);
+//		}
+//		
+//		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
+//			//Engage Anti-Reverse
+//			System.out.println("Fire Anti-Reverse");
+//			engageAntiReverse();
+//			released = false;
+//		}
+//		
+//		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)) {
+//			released = true;
+//		}
 		
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
-			//Engage Anti-Reverse
-			System.out.println("Fire Anti-Reverse");
-			engageAntiReverse();
-			released = false;
-		}
-		
-		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)) {
-			released = true;
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(1)) {
+			elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+			elevator2.set(Joysticks.getInstance().getOperatorStick().getThrottle());
+		}else{
+			elevator1.set(0);
+			elevator2.set(0);
 		}
 	}
 	

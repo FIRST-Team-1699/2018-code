@@ -25,7 +25,6 @@ public class CubeGrabber extends Command implements AutoCommand{
 	private final DoubleSolenoid opener;
 	
 	private final VictorSP leftRotate;
-	//private final VictorSP rightRotate;
 	
 	private final Encoder rotateEncoder;
 	
@@ -41,7 +40,6 @@ public class CubeGrabber extends Command implements AutoCommand{
 		//TODO Uncomment
 		opener = new DoubleSolenoid(Constants.PCM_ID, Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
 		leftRotate = new VictorSP(Constants.GRABBER_LEFT_ROTATE);
-		//rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
 		rotateEncoder = new Encoder(Constants.ARM_ENCODER_1, Constants.ARM_ENCODER_2);
 		
 		opener.set(Value.kReverse);
@@ -74,10 +72,18 @@ public class CubeGrabber extends Command implements AutoCommand{
 			lower_motor_limit = -1;
 		}
 		
-		if(Joysticks.getInstance().getOperatorStick().getY() > lower_motor_limit &&
-				Joysticks.getInstance().getOperatorStick().getY() < upper_motor_limit) {
-			leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
-		}else {
+//		if(Joysticks.getInstance().getOperatorStick().getY() > lower_motor_limit &&
+//				Joysticks.getInstance().getOperatorStick().getY() < upper_motor_limit) {
+//			leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
+//		}else {
+//			leftRotate.set(0);
+//		}
+		
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
+			leftRotate.set(1);
+		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
+			leftRotate.set(-1);
+		}else{
 			leftRotate.set(0);
 		}
 	}
