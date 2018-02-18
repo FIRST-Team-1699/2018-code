@@ -12,17 +12,20 @@ public class RightSwitch implements AutoMode{
 
 	@Override
 	public void runAuto() {
-		//Basic code for switch selection. Will change
+		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		if(gameData.charAt(0) == 'R')
+		if(gameData.charAt(0) == 'R') //checks if switch is on right side
 		{
+			//if switch on right: drives forward and puts crate into switch
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, .7, true);
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.7, true);
-			CubeGrabber.getInstance().runAuto(0, 0, false);
+			CubeGrabber.getInstance().runAuto(0, 0.7, true);
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
+			CubeGrabber.getInstance().dropAuto();
 			
 		}else {
+			//if switch on left: drives forward and holds crate
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.7, true);
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
