@@ -109,6 +109,8 @@ public class Drive extends Command implements AutoCommand{
 			default: openLoop(); //Might change to invalid state exception
 				break;
 		}
+		
+		System.out.println(driveGyro.getAngle());
 	}
 	
 	private void openLoop() {
