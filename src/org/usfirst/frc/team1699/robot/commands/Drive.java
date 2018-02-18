@@ -67,7 +67,7 @@ public class Drive extends Command implements AutoCommand{
 		portSlave = new WPI_TalonSRX(Constants.PORT_SLAVE_PORT);
 		starboardMaster = new WPI_TalonSRX(Constants.STARBOARD_MASTER_PORT);
 		starboardSlave = new WPI_TalonSRX(Constants.STARBOARD_SLAVE_PORT);
-		driveGyro = new BetterGryo(Constants.GRYO_PORT);
+		driveGyro = new BetterGryo();
 		portEncoder = new BetterEncoder(Constants.PORT_ENCODER_A, Constants.PORT_ENCODER_B);
 		starboardEncoder = new BetterEncoder(Constants.STARBOARD_ENCODER_A, Constants.STARBOARD_ENCODER_B);
 		
@@ -109,6 +109,8 @@ public class Drive extends Command implements AutoCommand{
 			default: openLoop(); //Might change to invalid state exception
 				break;
 		}
+		
+		System.out.println(driveGyro.getAngle());
 	}
 	
 	private void openLoop() {

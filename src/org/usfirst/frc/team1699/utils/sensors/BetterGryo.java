@@ -1,44 +1,40 @@
 package org.usfirst.frc.team1699.utils.sensors;
 
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class BetterGryo implements Gyro {
 
-	public BetterGryo(int gryoPort) {
-		// TODO Auto-generated constructor stub
+	private Gyro gyro;
+	
+	public BetterGryo() {
+		gyro = new ADXRS450_Gyro();
+		gyro.calibrate();
 	}
 
 	@Override
 	public void calibrate() {
-		// TODO Auto-generated method stub
-		
+		gyro.calibrate();
 	}
 
 	@Override
 	public void reset() {
-		// TODO Auto-generated method stub
-		
+		gyro.reset();		
 	}
 
 	@Override
 	public double getAngle() {
-		// TODO Auto-generated method stub
-		return 0;
+		return gyro.getAngle();
 	}
 
 	@Override
 	public double getRate() {
-		// TODO Auto-generated method stub
-		return 0;
+		return gyro.getRate();
 	}
 
 	@Override
 	public void free() {
-		// TODO Auto-generated method stub
-		
+		gyro.free();		
 	}
 
-	/*
-	 * TODO Fill in class
-	 */
 }
