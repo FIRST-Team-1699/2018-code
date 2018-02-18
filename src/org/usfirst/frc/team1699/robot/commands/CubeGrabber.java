@@ -74,10 +74,18 @@ public class CubeGrabber extends Command implements AutoCommand{
 			lower_motor_limit = -1;
 		}
 		
-		if(Joysticks.getInstance().getOperatorStick().getY() > lower_motor_limit &&
-				Joysticks.getInstance().getOperatorStick().getY() < upper_motor_limit) {
-			leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
-		}else {
+//		if(Joysticks.getInstance().getOperatorStick().getY() > lower_motor_limit &&
+//				Joysticks.getInstance().getOperatorStick().getY() < upper_motor_limit) {
+//			leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
+//		}else {
+//			leftRotate.set(0);
+//		}
+		
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
+			leftRotate.set(1);
+		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
+			leftRotate.set(-1);
+		}else{
 			leftRotate.set(0);
 		}
 	}
