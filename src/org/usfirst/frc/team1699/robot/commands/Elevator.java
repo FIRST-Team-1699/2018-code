@@ -156,6 +156,7 @@ public class Elevator extends Command implements AutoCommand{
 	}
 
 	@Override
+	//raises elevator for auto
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
 			setElevator(speed);

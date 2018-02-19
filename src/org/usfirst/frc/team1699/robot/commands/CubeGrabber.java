@@ -15,6 +15,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 
 	private static CubeGrabber instance;
 	
+	//creates instance of CubeGrabber
 	public static CubeGrabber getInstance() {
 		if(instance == null) {
 			instance = new CubeGrabber("CubeGrabber", Constants.CUBE_GRABBER_ID);
@@ -34,7 +35,8 @@ public class CubeGrabber extends Command implements AutoCommand{
 	//motor limits
 	private double upper_motor_limit = 1;
 	private double lower_motor_limit = -1;
-		
+	
+	//interpreting instance of CubeGrabber
 	private CubeGrabber(String name, int id) {
 		super(name, id);
 		//TODO Uncomment
@@ -48,6 +50,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	@Override
 	public void run() {
 		//TODO Make it move
+		//opens claw, I assume
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON) && released){
 			//toggleClawOpen();
 			System.out.println("Fire Claw");
@@ -55,12 +58,15 @@ public class CubeGrabber extends Command implements AutoCommand{
 			released = false;
 		}
 		
+		//close claw, I assume
 		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON)) {
 			released = true;
 		}
 		
+		//check that claw is in limits
 		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
 		
+		//rotate claw
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
 			leftRotate.set(1);
 		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
@@ -70,9 +76,12 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 	}
 	
+	//comapres encoder distance to limits passed in and adjusts motor limits
 	private void checkLimits(double upperLimit, double lowerLimit) {
+		//check upper limit
 		if(rotateEncoder.getDistance() > upperLimit) {
 			upper_motor_limit = 0;
+		//check lower limit
 		}else if(rotateEncoder.getDistance() < lowerLimit) {
 			lower_motor_limit = 0;
 		}else {
@@ -89,7 +98,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		
 	}
 	
-	
+	//opens claw if closed, closes claw if open
 	private void toggleClawOpen(){
 		if(opener.get() == Value.kReverse){
 			opener.set(Value.kForward);
@@ -111,6 +120,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	}
 	
 	@Override
+	//drops claw from upper position during autonomous
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
 		if(speed > lower_motor_limit && speed < upper_motor_limit) {
@@ -120,6 +130,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 	}
 	
+	//calls toggleClawOpen() during autonomous
 	public void dropAuto() {
 		toggleClawOpen();
 	}

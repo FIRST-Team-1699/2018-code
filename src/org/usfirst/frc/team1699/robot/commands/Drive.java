@@ -181,6 +181,8 @@ public class Drive extends Command implements AutoCommand{
 	
 	
 	@Override
+	
+	//drives forward for double distance at double speed
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
 		while(distance < portEncoder.getDistance()){
@@ -189,18 +191,20 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(0, 0);
 	}
 	
-	public void auto2Right(double speed, double setPoint) {
+	//turns right "angle" degrees 
+	public void auto2Right(double speed, double setPoint, double angle) {
 		double initialAngle = driveGyro.getAngle();
 		rotatePID.setSetpoint(setPoint);
-		while(driveGyro.getAngle() < initialAngle - 90) {
+		while(driveGyro.getAngle() < initialAngle - angle) {
 			driveTrain.arcadeDrive(speed, rotatePID.get());
 		}
 	}
 	
-	public void auto2Left(double speed, double setPoint) {
+	//turns left "angle" degrees
+	public void auto2Left(double speed, double setPoint, double angle) {
 		double initialAngle = driveGyro.getAngle();
 		rotatePID.setSetpoint(setPoint);
-		while(driveGyro.getAngle() > initialAngle + 90) {
+		while(driveGyro.getAngle() > initialAngle + angle) {
 			driveTrain.arcadeDrive(speed, rotatePID.get());
 		}
 	}
