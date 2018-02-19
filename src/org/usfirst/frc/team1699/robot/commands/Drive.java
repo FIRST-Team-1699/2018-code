@@ -189,6 +189,22 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(0, 0);
 	}
 	
+	public void auto2Right(double speed, double setPoint) {
+		double initialAngle = driveGyro.getAngle();
+		rotatePID.setSetpoint(setPoint);
+		while(driveGyro.getAngle() < initialAngle - 90) {
+			driveTrain.arcadeDrive(speed, rotatePID.get());
+		}
+	}
+	
+	public void auto2Left(double speed, double setPoint) {
+		double initialAngle = driveGyro.getAngle();
+		rotatePID.setSetpoint(setPoint);
+		while(driveGyro.getAngle() > initialAngle + 90) {
+			driveTrain.arcadeDrive(speed, rotatePID.get());
+		}
+	}
+	
 	@Override
 	public boolean autoCommandDone() {
 		return false;
