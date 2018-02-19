@@ -8,6 +8,7 @@ public class BaseLine implements AutoMode{
 
 	@Override
 	public void runAuto() {
+		//drives to baseline
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);
 	}
 

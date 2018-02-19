@@ -39,6 +39,9 @@ public class Constants {
 	//Joystick button constants
 	public static final int LIFT_BUTTON = 1;
 	public static final int ENGAGE_ANTIREVERSE_BUTTON = 7;
+	public static final int ELEVATOR_TO_TOP = 4;
+	public static final int ELEVATOR_TO_MID = 5;
+	public static final int ELEVATOR_TO_BOT = 6;
 	
 	//Elevator encoder ports
 	public static final int LIFT_ENCODER_ID_1 = 19;
@@ -71,8 +74,8 @@ public class Constants {
 	public static final double BOT_LIMIT = 0.0;
 	
 	//Elevator Encoder Limit
-	public static final double TOP_ELEVATOR_LIMIT = 0.0;
-	public static final double BOT_ELEVATOR_LIMIT = 0.0;
+	public static final double TOP_ELEVATOR_LIMIT = 50.0;
+	public static final double BOT_ELEVATOR_LIMIT = 5.0;
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;

@@ -181,6 +181,8 @@ public class Drive extends Command implements AutoCommand{
 	
 	//auto utils
 	@Override
+	
+	//drives forward for double distance at double speed
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
@@ -191,6 +193,24 @@ public class Drive extends Command implements AutoCommand{
 			//driveTrain.arcadeDrive(speed, 0);
 		}
 		driveTrain.arcadeDrive(0, 0);
+	}
+	
+	//turns right "angle" degrees 
+	public void auto2Right(double speed, double setPoint, double angle) {
+		double initialAngle = driveGyro.getAngle();
+		rotatePID.setSetpoint(setPoint);
+		while(driveGyro.getAngle() < initialAngle - angle) {
+			driveTrain.arcadeDrive(speed, rotatePID.get());
+		}
+	}
+	
+	//turns left "angle" degrees
+	public void auto2Left(double speed, double setPoint, double angle) {
+		double initialAngle = driveGyro.getAngle();
+		rotatePID.setSetpoint(setPoint);
+		while(driveGyro.getAngle() > initialAngle + angle) {
+			driveTrain.arcadeDrive(speed, rotatePID.get());
+		}
 	}
 	
 	@Override
