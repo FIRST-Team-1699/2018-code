@@ -55,17 +55,17 @@ public class Elevator extends Command implements AutoCommand{
 //		}else {
 //			setElevator(0);
 //		}
-//		
-//		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
-//			//Engage Anti-Reverse
-//			System.out.println("Fire Anti-Reverse");
-//			engageAntiReverse();
-//			released = false;
-//		}
-//		
-//		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)) {
-//			released = true;
-//		}
+		
+		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON) && released){
+			//Engage Anti-Reverse
+			System.out.println("Fire Anti-Reverse");
+			engageAntiReverse();
+			released = false;
+		}
+		
+		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.ENGAGE_ANTIREVERSE_BUTTON)) {
+			released = true;
+		}
 		
 		if(Joysticks.getInstance().getOperatorStick().getRawButton(1)) {
 			elevator1.set(Joysticks.getInstance().getOperatorStick().getThrottle());

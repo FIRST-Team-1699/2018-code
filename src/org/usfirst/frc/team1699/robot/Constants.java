@@ -14,10 +14,10 @@ public class Constants {
 	
 	//Sensor constants
 	public static final int GRYO_PORT = 0;
-	public static final int PORT_ENCODER_A = 0;
-	public static final int PORT_ENCODER_B = 1;
-	public static final int STARBOARD_ENCODER_A = 2;
-	public static final int STARBOARD_ENCODER_B = 3;
+	public static final int PORT_ENCODER_A = 7;
+	public static final int PORT_ENCODER_B = 6;
+	public static final int STARBOARD_ENCODER_A = 9;
+	public static final int STARBOARD_ENCODER_B = 8;
 	public static final int LOWER_LIMIT = 0;
 	public static final int UPPER_LIMIT = 0;
 	
@@ -58,8 +58,8 @@ public class Constants {
 	public static final int GRABBER_SOLENOID_2 = 3;
 	
 	//Arm encoder constants
-	public static final int ARM_ENCODER_1 = 29;
-	public static final int ARM_ENCODER_2 = 30;
+	public static final int ARM_ENCODER_1 = 5;
+	public static final int ARM_ENCODER_2 = 4;
 	
 	//Grabber Button
 	public static final int GRABBER_BUTTON = 2;

@@ -81,8 +81,8 @@ public class Drive extends Command implements AutoCommand{
 		
 		//Software controllers
 		//TODO Give real values
-		rotatePID = new SynchronousPIDF(0.0, 0.0, 0.0);
-		portVelocityPID = new SynchronousPIDF(0.0, 0.0, 0.0);
+		rotatePID = new SynchronousPIDF(0.4, 0.1, 0.2);
+		portVelocityPID = new SynchronousPIDF(0.4, 0.0, 0.0);
 		starboardVelocityPID = new SynchronousPIDF(0.0, 0.0, 0.0);
 		
 		//TBD may change if we end up with our own method of control
@@ -110,7 +110,9 @@ public class Drive extends Command implements AutoCommand{
 				break;
 		}
 		
-		System.out.println(driveGyro.getAngle());
+		System.out.println("Gyro: " + driveGyro.getAngle());
+		System.out.println("Port: " + portEncoder.get());
+		System.out.println("Starboard: " + starboardEncoder.get() / 13);
 	}
 	
 	private void openLoop() {
@@ -178,13 +180,15 @@ public class Drive extends Command implements AutoCommand{
 	}
 	
 	//auto utils
-	
-	
 	@Override
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
-		while(distance < portEncoder.getDistance()){
-			driveTrain.arcadeDrive(speed, rotatePID.get());
+		starboardVelocityPID.setSetpoint(distance);
+		while(distance > starboardEncoder.get() / 13){
+			System.out.println(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01));
+			driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+			//driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+			//driveTrain.arcadeDrive(speed, 0);
 		}
 		driveTrain.arcadeDrive(0, 0);
 	}

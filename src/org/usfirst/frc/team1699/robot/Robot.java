@@ -49,21 +49,23 @@ public class Robot extends IterativeRobot {
 	
 	@Override
 	public void autonomousInit() {
-		//Auto Chooser
-		autoChooser = new SendableChooser<AutoMode>();
-		autoChooser.addDefault("Default", new BaseLine());
-		autoChooser.addObject("Left Switch", new LeftSwitch());
-		autoChooser.addObject("Right Switch", new RightSwitch());
-		autoChooser.addDefault("Base Line", new BaseLine());
-		SmartDashboard.putData("Auto mode chooser", autoChooser);
+//		//Auto Chooser
+//		autoChooser = new SendableChooser<AutoMode>();
+//		autoChooser.addDefault("Default", new BaseLine());
+//		autoChooser.addObject("Left Switch", new LeftSwitch());
+//		autoChooser.addObject("Right Switch", new RightSwitch());
+//		autoChooser.addDefault("Base Line", new BaseLine());
+//		SmartDashboard.putData("Auto mode chooser", autoChooser);
+//		
+//		//Run Auto
+//		((AutoMode) autoChooser.getSelected()).runAuto();
+//		
+//		//Output to Dashboard
+//		Drive.getInstance().outputToDashboard();
+//		CubeGrabber.getInstance().outputToDashboard();
+//		Elevator.getInstance().outputToDashboard();
 		
-		//Run Auto
-		((AutoMode) autoChooser.getSelected()).runAuto();
-		
-		//Output to Dashboard
-		Drive.getInstance().outputToDashboard();
-		CubeGrabber.getInstance().outputToDashboard();
-		Elevator.getInstance().outputToDashboard();
+		Drive.getInstance().runAuto(120, .6, true);
 		
 		
 	}
