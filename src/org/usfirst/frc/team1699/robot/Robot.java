@@ -65,7 +65,7 @@ public class Robot extends IterativeRobot {
 //		CubeGrabber.getInstance().outputToDashboard();
 //		Elevator.getInstance().outputToDashboard();
 		
-		Drive.getInstance().runAuto(120, .6, true);
+		Drive.getInstance().runAuto(130, .6, true);
 		
 		
 	}

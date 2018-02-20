@@ -186,10 +186,11 @@ public class Drive extends Command implements AutoCommand{
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
+		starboardVelocityPID.setOutputRange(-1, 1);
 		while(distance > starboardEncoder.get() / 13){
-			System.out.println(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01));
-			driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
-			//driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+			//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+			//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+			driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
 			//driveTrain.arcadeDrive(speed, 0);
 		}
 		driveTrain.arcadeDrive(0, 0);

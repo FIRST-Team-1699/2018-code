@@ -22,9 +22,9 @@ public class EitherSwitch implements AutoMode{
 		if(gameData.charAt(0) == 'R') {
 			//if switch on right: drive to right switch from center of wall and drop crate in switch
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
-			Drive.getInstance().auto2Right(0, 90);
+			//Drive.getInstance().auto2Right(0, 90);
 			Drive.getInstance().runAuto(Constants.SWITCH_LENGTH/2, 0.7, true);
-			Drive.getInstance().auto2Left(0, 90);
+			//Drive.getInstance().auto2Left(0, 90);
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.7, true);
 			CubeGrabber.getInstance().runAuto(0, 0.7, true);
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
@@ -32,9 +32,9 @@ public class EitherSwitch implements AutoMode{
 		}else {
 			//if switch on left: drive to left switch from center of wall and drop crate in switch
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
-			Drive.getInstance().auto2Left(0, 90);
+			//Drive.getInstance().auto2Left(0, 90);
 			Drive.getInstance().runAuto(Constants.SWITCH_LENGTH/2, 0.7, true);
-			Drive.getInstance().auto2Right(0, 90);
+			//Drive.getInstance().auto2Right(0, 90);
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.7, true);
 			CubeGrabber.getInstance().runAuto(0, 0.7, true);
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);
