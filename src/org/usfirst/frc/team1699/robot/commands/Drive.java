@@ -187,11 +187,20 @@ public class Drive extends Command implements AutoCommand{
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
 		starboardVelocityPID.setOutputRange(-1, 1);
-		while(distance > starboardEncoder.get() / 13){
-			//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
-			//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
-			driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
-			//driveTrain.arcadeDrive(speed, 0);
+		if(speed > 0) {
+			while(distance > starboardEncoder.get() / 13){
+				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+				//driveTrain.arcadeDrive(speed, 0);
+			}
+		}else{
+			while(distance < starboardEncoder.get() / 13){
+				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+				//driveTrain.arcadeDrive(speed, 0);
+			}
 		}
 		driveTrain.arcadeDrive(0, 0);
 	}
@@ -200,7 +209,8 @@ public class Drive extends Command implements AutoCommand{
 	public void auto2Right(double speed, double setPoint, double angle) {
 		double initialAngle = driveGyro.getAngle();
 		rotatePID.setSetpoint(setPoint);
-		while(driveGyro.getAngle() < initialAngle - angle) {
+		while(driveGyro.getAngle() < setPoint) {
+			System.out.println("Right: " + driveGyro.getAngle());
 			driveTrain.arcadeDrive(speed, rotatePID.get());
 		}
 	}
@@ -209,7 +219,8 @@ public class Drive extends Command implements AutoCommand{
 	public void auto2Left(double speed, double setPoint, double angle) {
 		double initialAngle = driveGyro.getAngle();
 		rotatePID.setSetpoint(setPoint);
-		while(driveGyro.getAngle() > initialAngle + angle) {
+		while(driveGyro.getAngle() < setPoint) {
+			System.out.println("Left: " + driveGyro.getAngle());
 			driveTrain.arcadeDrive(speed, rotatePID.get());
 		}
 	}

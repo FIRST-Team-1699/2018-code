@@ -44,7 +44,7 @@ public class Elevator extends Command implements AutoCommand{
 		liftEncoder = new Encoder(Constants.LIFT_ENCODER_ID_3, Constants.LIFT_ENCODER_ID_4);
 		antiReverse = new DoubleSolenoid(Constants.PCM_ID, Constants.ANTI_REVERSE_SOLENOID_1, Constants.ANTI_REVERSE_SOLENOID_2);
 		
-		antiReverse.set(Value.kReverse);
+		antiReverse.set(Value.kForward);
 	}
 
 	@Override
@@ -158,11 +158,15 @@ public class Elevator extends Command implements AutoCommand{
 	@Override
 	//raises elevator for auto
 	public void runAuto(double distance, double speed, boolean useSensor) {
-		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
-			setElevator(speed);
-		}else {
-			setElevator(0);
+//		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
+//			setElevator(speed);
+//		}else {
+//			setElevator(0);
+//		}
+		for(int i = 0; i < distance; i++) {
+			setElevator(speed * -1);
 		}
+		setElevator(0);
 	}
 
 	@Override

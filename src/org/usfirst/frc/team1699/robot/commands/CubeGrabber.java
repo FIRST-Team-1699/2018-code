@@ -124,7 +124,11 @@ public class CubeGrabber extends Command implements AutoCommand{
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
 		if(speed > lower_motor_limit && speed < upper_motor_limit) {
-			leftRotate.set(speed);
+			if(rotateEncoder.get() < distance) {
+				leftRotate.set(speed);
+			}else{
+				leftRotate.set(0);
+			}
 		}else {
 			leftRotate.set(0);
 		}

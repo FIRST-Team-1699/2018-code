@@ -14,8 +14,8 @@ public class Constants {
 	
 	//Sensor constants
 	public static final int GRYO_PORT = 0;
-	public static final int PORT_ENCODER_A = 7;
-	public static final int PORT_ENCODER_B = 6;
+	public static final int PORT_ENCODER_A = 4;
+	public static final int PORT_ENCODER_B = 3;
 	public static final int STARBOARD_ENCODER_A = 9;
 	public static final int STARBOARD_ENCODER_B = 8;
 	public static final int LOWER_LIMIT = 0;
@@ -61,8 +61,8 @@ public class Constants {
 	public static final int GRABBER_SOLENOID_2 = 3;
 	
 	//Arm encoder constants
-	public static final int ARM_ENCODER_1 = 5;
-	public static final int ARM_ENCODER_2 = 4;
+	public static final int ARM_ENCODER_1 = 6;
+	public static final int ARM_ENCODER_2 = 7;
 	
 	//Grabber Button
 	public static final int GRABBER_BUTTON = 2;
@@ -79,11 +79,11 @@ public class Constants {
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;
-	public static final int DISTANCE_TO_SWITCH = 0;
+	public static final int DISTANCE_TO_SWITCH = 131;
 	public static final int SWITCH_LENGTH = 0;
 	
 	//Elevator auto encoder constants
-	public static final double AUTO_SWITCH_UPPER_LIMIT = 0.0;
+	public static final double AUTO_SWITCH_UPPER_LIMIT = 3000;
 	public static final double AUTO_SWITCH_LOWER_LIMIT = 0.0;
 	
 	//PCM Constants
