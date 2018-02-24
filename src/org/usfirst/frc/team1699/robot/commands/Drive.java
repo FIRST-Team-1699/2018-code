@@ -10,6 +10,7 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -182,7 +183,13 @@ public class Drive extends Command implements AutoCommand{
 	//auto utils
 	@Override
 	
-	//drives forward for double distance at double speed
+	/**
+	 * Drives forward for double distance at double speed
+	 * 
+	 * @param distance The desired distance of robot movement
+	 * @param speed The desired speed at which the robot will move
+	 * @param useSensor Option to decide whether or not to use a sensor
+	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
@@ -195,7 +202,7 @@ public class Drive extends Command implements AutoCommand{
 				//driveTrain.arcadeDrive(speed, 0);
 			}
 		}else{
-			while(distance < starboardEncoder.get() / 13){
+			while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
 				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
 				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
@@ -205,18 +212,25 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(0, 0);
 	}
 	
-	//Pos turns right, neg turns left
-	public void autoTurn(double speed, double setPoint, double angle) {
+	
+	/**
+	 * Pos turns right, neg turns left
+	 * This is for autonomous
+	 * 
+	 * @param speed The speed at which the rotation should take place. Positive turns right, negative turns left
+	 * @param setPoint The point at which the robot should stop rotation
+	 */
+	public void autoTurn(double speed, double setPoint) {
 		rotatePID.setSetpoint(setPoint);
 		driveGyro.reset();
 		if(setPoint < 0) {
-			while(driveGyro.getAngle() > setPoint) {
+			while(driveGyro.getAngle() > setPoint && DriverStation.getInstance().isAutonomous()) {
 				System.out.println("Gyro: " + driveGyro.getAngle());
 				System.out.println(rotatePID.calculate(driveGyro.getAngle(), .01));
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
 			}
 		}else{
-			while(driveGyro.getAngle() < setPoint) {
+			while(driveGyro.getAngle() < setPoint && DriverStation.getInstance().isAutonomous()) {
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
 			}
 		}
@@ -231,6 +245,10 @@ public class Drive extends Command implements AutoCommand{
 	
 	//Sets correct drive state
 	//TODO make sure this is thread save if we end up going to that direction
+	/**
+	 * 
+	 * @param state The desired state to be set to
+	 */
 	public void setState(DriveState state){
 		this.driveState = state;
 	}
@@ -250,51 +268,89 @@ public class Drive extends Command implements AutoCommand{
 	
 	//Gets correct drive state
 	//TODO make sure this is thread safe if we end up going to that direction
+	/**
+	 * 
+	 * @return Current drive state
+	 */
 	public DriveState getState(){
 		return this.driveState;
 	}
 	
-	//Returns port shaft rpm
+	/**
+	 * 
+	 * @return The RPM of the port shaft
+	 */
 	private double getPortShaftRPM(){
 		return portEncoder.getRate();
 	}
 	
 	//Returns starboard shaft rpm
+	/**
+	 * 
+	 * @return The RPM of the starboard shaft
+	 */
 	private double getStarboardShaftRPM(){
 		return starboardEncoder.getRate();
 	}
 	
-	//Uses port encoder to calculate speed over the floor
+	/**
+	 * 
+	 * @return The surface speed in ft/s based on the port side
+	 */
 	private double getPortSurfaceSpeed(){
 		return getPortShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
 	}
 	
-	//Uses starboard encoder to calculate speed over the floor
+	/**
+	 * 
+	 * @return The surface speed in ft/s based on starboard side
+	 */
 	private double getStarboardSurfaceSpeed(){
 		return getStarboardShaftRPM() * Constants.WHEEL_DIAMETER; //Needs verification
 	}
 		
-	//Returns the current percentage of the max surface speed for the port side
+
+	/**
+	 * 
+	 * @return Current percentage of max surface speed for port side
+	 */
 	private double portPercentMaxSpeed(){
 		return (getPortSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
 	}
 		
 	//Returns the current percentage of the max surface speed for the starboard side
-	private double starboardPercentMaxSpeed() throws Exception{
+	/**
+	 * 
+	 * @return Current percentage of max surface speed for starboard side
+	 */
+	private double starboardPercentMaxSpeed(){
 		return (getStarboardSurfaceSpeed() / Constants.MAX_SURFACE_SPEED);
 	}
 
 	//Returns true if the joystick value is within the dead band
+	/**
+	 * 
+	 * @param inp Double value representing input from joystick
+	 * @return True if joystick value is within deadband, false otherwise
+	 */
 	private boolean withinJoystickDeadBand(double inp){
 		return inp < JOYSTICK_DEADBAND && inp > (JOYSTICK_DEADBAND * -1);
 	}
-		
+	
+	/**
+	 * 
+	 * @param setpoint Sets goal for velocity PID loops
+	 */
 	private void setVelocitySetpoint(double setpoint){
 		this.velocitySetpoint = setpoint;
 		portVelocityPID.setSetpoint(setpoint);
 		starboardVelocityPID.setSetpoint(setpoint);
 	}
-		
+	
+	/**
+	 * 
+	 * @return The goal for velocity PID loops
+	 */
 	private double getVelocitySetpoint(){
 		return this.velocitySetpoint;
 	}

@@ -7,6 +7,7 @@ import org.usfirst.frc.team1699.utils.command.Command;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
@@ -76,6 +77,15 @@ public class Elevator extends Command implements AutoCommand{
 		}
 	}
 	
+	
+	/**
+	 * Determines if the elevator is within set software limits
+	 * 
+	 * @param encValue The encoder value that reads the position
+	 * @param upperLimit The upper limit of the elevator
+	 * @param lowerLimit The lower limit of the elevator
+	 * @return True if within limits, false if otherwise
+	 */
 	private boolean withinLimits(double encValue, double upperLimit, double lowerLimit){
 		if(encValue < upperLimit && encValue > lowerLimit) {
 			return true;
@@ -85,6 +95,12 @@ public class Elevator extends Command implements AutoCommand{
 	}
 	
 	//compare value of encValue to TOP_ELEVATOR_LIMIT
+	/**
+	 * Compares value from encoder to the upper elevator limit
+	 * 
+	 * @param encValue The encoder value
+	 * @return True if under upper limit, false if equal to or above
+	 */
 	private boolean checkUpperLimit(double encValue) {
 		if(encValue > Constants.TOP_ELEVATOR_LIMIT) {
 			return true;
@@ -94,6 +110,12 @@ public class Elevator extends Command implements AutoCommand{
 	}
 	
 	//compare value of encValue to BOT_ELEVATOR_LIMIT
+	/**
+	 * Compares encoder value to the lower elevator limit
+	 * 
+	 * @param encValue Encoder value
+	 * @return True if above lower limit, false if equal to or below
+	 */
 	private boolean checkLowerLimit(double encValue) {
 		if(encValue < Constants.BOT_ELEVATOR_LIMIT) {
 			return true;
@@ -103,12 +125,23 @@ public class Elevator extends Command implements AutoCommand{
 	}
 	
 	//set speed of both elevator motors to double speed
+	/**
+	 * Sets speed of elevator
+	 * 
+	 * @param speed Value between -1 and 1, controls speed of elevator
+	 */
 	private void setElevator(double speed) {
 		elevator1.set(speed);
 		elevator2.set(speed);
 	}
 	
 	//ensure limits aren't broken
+	/**
+	 * Checks to make sure limits aren't broken
+	 * 
+	 * @param upperLimit The upper limit value
+	 * @param lowerLimit The lower limit value
+	 */
 	private void checkLimits(double upperLimit, double lowerLimit) {
 		//Move elevator
 		if(withinLimits(liftEncoder.getDistance(), upperLimit, lowerLimit)){
@@ -157,6 +190,12 @@ public class Elevator extends Command implements AutoCommand{
 
 	@Override
 	//raises elevator for auto
+	/**
+	 * Raises or lowers elevator in auto
+	 * @param distance The desired travel of the elevator
+	 * @param speed The speed at which the elevator will move
+	 * @param useSensor Decide to use sensors or not
+	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 //		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
 //			setElevator(speed);
@@ -164,6 +203,7 @@ public class Elevator extends Command implements AutoCommand{
 //			setElevator(0);
 //		}
 		for(int i = 0; i < distance; i++) {
+			if(DriverStation.getInstance().isAutonomous()) break;
 			setElevator(speed * -1);
 		}
 		setElevator(0);

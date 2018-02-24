@@ -36,7 +36,12 @@ public class CubeGrabber extends Command implements AutoCommand{
 	private double upper_motor_limit = 1;
 	private double lower_motor_limit = -1;
 	
-	//interpreting instance of CubeGrabber
+	/**
+	 * interprets instance of CubeGrabber
+	 * 
+	 * @param name Name of CubeGrabber
+	 * @param id ID of CubeGrabber
+	 */
 	private CubeGrabber(String name, int id) {
 		super(name, id);
 		//TODO Uncomment
@@ -76,7 +81,12 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 	}
 	
-	//comapres encoder distance to limits passed in and adjusts motor limits
+	/**
+	 * compares encoder distance to limits passed in and adjusts motor limits
+	 * 
+	 * @param upperLimit The upper limit of CubeGrabber rotation
+	 * @param lowerLimit The lower limit of CubeGrabber rotation
+	 */
 	private void checkLimits(double upperLimit, double lowerLimit) {
 		//check upper limit
 		if(rotateEncoder.getDistance() > upperLimit) {
@@ -120,7 +130,12 @@ public class CubeGrabber extends Command implements AutoCommand{
 	}
 	
 	@Override
-	//drops claw from upper position during autonomous
+	/**
+	 * drops claw from upper position during autonomous
+	 * 
+	 * @param distance The desired amount of rotation
+	 * @param speed The desired amount of speed of the rotation
+	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
 		if(speed > lower_motor_limit && speed < upper_motor_limit) {
