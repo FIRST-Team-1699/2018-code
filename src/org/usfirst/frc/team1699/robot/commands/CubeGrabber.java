@@ -32,6 +32,8 @@ public class CubeGrabber extends Command implements AutoCommand{
 	//Joystick Utils
 	private boolean released = true;
 	
+	private boolean clawOpen = false;
+	
 	//motor limits
 	private double upper_motor_limit = 1;
 	private double lower_motor_limit = -1;
@@ -112,7 +114,9 @@ public class CubeGrabber extends Command implements AutoCommand{
 	private void toggleClawOpen(){
 		if(opener.get() == Value.kReverse){
 			opener.set(Value.kForward);
+			clawOpen = true;
 		}else if(opener.get() == Value.kForward){
+			clawOpen = false;
 			opener.set(Value.kReverse);
 		}else {
 			opener.set(Value.kOff);
@@ -122,6 +126,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	@Override
 	public void outputToDashboard() {
 		SmartDashboard.putNumber("Arm Position", rotateEncoder.getDistance());
+		SmartDashboard.putBoolean("Claw Open", clawOpen);
 	}
 
 	@Override

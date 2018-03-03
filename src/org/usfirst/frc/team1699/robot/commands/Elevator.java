@@ -27,6 +27,8 @@ public class Elevator extends Command implements AutoCommand{
 	//Lift sensors
 	private final Encoder liftEncoder;
 	
+	private boolean ratchetEngaged = false;
+	
 	//Lift motors
 	//TODO FIX NAMES
 	private final VictorSP elevator1;
@@ -171,8 +173,10 @@ public class Elevator extends Command implements AutoCommand{
 	private void engageAntiReverse() {
 		if(antiReverse.get() == Value.kReverse){
 			antiReverse.set(Value.kForward);
+			ratchetEngaged = true;
 		}else if(antiReverse.get() == Value.kForward){
 			antiReverse.set(Value.kReverse);
+			ratchetEngaged = false;
 		}else{
 			antiReverse.set(Value.kOff);
 		}
@@ -181,6 +185,7 @@ public class Elevator extends Command implements AutoCommand{
 	@Override
 	public void outputToDashboard() {
 		SmartDashboard.putNumber("Elevator Position", liftEncoder.getDistance());
+		SmartDashboard.putBoolean("Ratchet Engaged", ratchetEngaged);
 	}
 
 	@Override
