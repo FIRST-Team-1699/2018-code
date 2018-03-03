@@ -74,13 +74,15 @@ public class CubeGrabber extends Command implements AutoCommand{
 		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
 		
 		//rotate claw
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
-			leftRotate.set(1);
-		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
-			leftRotate.set(-1);
-		}else{
-			leftRotate.set(0);
-		}
+//		if(Joysticks.getInstance().getOperatorStick().getRawButton(8)) {
+//			leftRotate.set(1);
+//		}else if(Joysticks.getInstance().getOperatorStick().getRawButton(9)){
+//			leftRotate.set(-1);
+//		}else{
+//			leftRotate.set(0);
+//		}
+		
+		leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
 	}
 	
 	/**
