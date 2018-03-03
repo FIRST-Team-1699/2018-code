@@ -170,6 +170,9 @@ public class Elevator extends Command implements AutoCommand{
 		}
 	}
 
+	/*
+	 * Engages the anti-falling solenoid that prevents the robot from falling down in a catastrophic manner.
+	 */
 	private void engageAntiReverse() {
 		if(antiReverse.get() == Value.kReverse){
 			antiReverse.set(Value.kForward);
@@ -195,12 +198,6 @@ public class Elevator extends Command implements AutoCommand{
 
 	@Override
 	//raises elevator for auto
-	/**
-	 * Raises or lowers elevator in auto
-	 * @param distance The desired travel of the elevator
-	 * @param speed The speed at which the elevator will move
-	 * @param useSensor Decide to use sensors or not
-	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 //		if(withinLimits(liftEncoder.getDistance(), Constants.AUTO_SWITCH_UPPER_LIMIT, Constants.AUTO_SWITCH_LOWER_LIMIT)) {
 //			setElevator(speed);

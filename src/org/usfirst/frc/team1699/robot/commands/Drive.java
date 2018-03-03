@@ -116,6 +116,9 @@ public class Drive extends Command implements AutoCommand{
 		System.out.println("Starboard: " + starboardEncoder.get() / 13);
 	}
 	
+	/*
+	 * Open loop driving, drives without sensors
+	 */
 	private void openLoop() {
 		//Standard open loop driving
 		//TODO make sure other states do not interfere
@@ -123,6 +126,9 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1, Joysticks.getInstance().getDriveStick().getX());
 	}
 	
+	/*
+	 * Makes the robot drive in a straight line
+	 */
 	private void straightLine() {
 		//Used to make the robot track in a straight line
 		//TODO Test
@@ -130,6 +136,9 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getThrottle(), rotatePID.get());
 	}
 	
+	/*
+	 * Uses sensors to make robit drive smoother?
+	 */
 	private void closedLoop(){
 		//Closed loop - need to determine what this should entail
 		//Speed is proportional to joystick up/down
@@ -155,6 +164,9 @@ public class Drive extends Command implements AutoCommand{
 		}
 	}
 	
+	/*
+	 * Drives at a predetermined velocity.
+	 */
 	private void setVelocity() {
 		//Drives at a predetermined velocity
 		//May transform into closed loop
@@ -182,14 +194,6 @@ public class Drive extends Command implements AutoCommand{
 	
 	//auto utils
 	@Override
-	
-	/**
-	 * Drives forward for double distance at double speed
-	 * 
-	 * @param distance The desired distance of robot movement
-	 * @param speed The desired speed at which the robot will move
-	 * @param useSensor Option to decide whether or not to use a sensor
-	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
