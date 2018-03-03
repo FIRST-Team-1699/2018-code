@@ -154,7 +154,9 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 	}
 	
-	//calls toggleClawOpen() during autonomous
+	/*
+	 * Calls toggleClawOpen() during autonomous
+	 */
 	public void dropAuto() {
 		toggleClawOpen();
 	}

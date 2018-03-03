@@ -11,6 +11,9 @@ public class Joysticks {
 	
 	private static Joysticks instance;
 	
+	/*
+	 * @return The current instance of the joysticks
+	 */
 	public static Joysticks getInstance(){
 		if(instance == null){
 			instance = new Joysticks();
@@ -18,15 +21,25 @@ public class Joysticks {
 		return instance;
 	}
 	
+	/*
+	 * This is a constructor for the Joysticks class, which is responsible for everything to do with joysticks.
+	 * Jakob told me not to comment this but I will anyway
+	 */
 	private Joysticks(){
 		driveInstance = new Joystick(Constants.DRIVE_STICK_PORT);
 		operatorInstance = new Joystick(Constants.OPERATOR_STICK_PORT);
 	}
 	
+	/*
+	 * @return The drive stick
+	 */
 	public Joystick getDriveStick(){
 		return this.driveInstance;
 	}
 	
+	/*
+	 * @return The operator stick
+	 */
 	public Joystick getOperatorStick(){
 		return this.operatorInstance;
 	}
