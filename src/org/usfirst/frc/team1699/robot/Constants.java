@@ -79,7 +79,7 @@ public class Constants {
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 0;
-	public static final int DISTANCE_TO_SWITCH = 131;
+	public static final int DISTANCE_TO_SWITCH = 103;
 	public static final int SWITCH_LENGTH = 0;
 	
 	//Elevator auto encoder constants
