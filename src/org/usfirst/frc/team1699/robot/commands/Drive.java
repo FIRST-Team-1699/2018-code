@@ -52,7 +52,7 @@ public class Drive extends Command implements AutoCommand{
 	
 	//Hardware state
 	private boolean isHighGear;
-	private boolean isLowGear;
+	//private boolean isLowGear;
 	private DriveState driveState;
 	
 	//Is Joystick button released
@@ -98,7 +98,6 @@ public class Drive extends Command implements AutoCommand{
 		
 		//Sets drive state
 		isHighGear = true;
-		isLowGear = false;
 		driveState = DriveState.OPEN_LOOP;
 	}
 
@@ -139,10 +138,8 @@ public class Drive extends Command implements AutoCommand{
 		if(Joysticks.getInstance().getDriveStick().getRawButton(Constants.DRIVE_GEAR_BUTTON) && released){
 			if(isHighGear) {
 				isHighGear = false;
-				isLowGear = true;
-			}else if(isLowGear) {
+			}else {
 				isHighGear = true;
-				isLowGear = false;
 			}
 			
 			released = false;
@@ -306,6 +303,7 @@ public class Drive extends Command implements AutoCommand{
 	public void outputToDashboard() {
 		//Puts rotation on dashboard
 		SmartDashboard.putNumber("Rotation", driveGyro.getAngle() % 360);
+		SmartDashboard.putBoolean("High Gear", isHighGear);
 	}
 
 	@Override
