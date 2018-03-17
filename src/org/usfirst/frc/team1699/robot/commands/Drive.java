@@ -37,6 +37,10 @@ public class Drive extends Command implements AutoCommand{
 		SET_VELOCITY, //Drives at a set velocity
 	}
 	
+	//Constants
+	public static final double LOW_GEAR = 0.5;
+	public static final double HIGH_GEAR = 1;
+	
 	//Hardware control
 	private final WPI_TalonSRX portMaster, portSlave, starboardMaster, starboardSlave;
 	private final Gyro driveGyro;
@@ -50,6 +54,9 @@ public class Drive extends Command implements AutoCommand{
 	private boolean isHighGear;
 	private boolean isLowGear;
 	private DriveState driveState;
+	
+	//Is Joystick button released
+	private boolean released = true;
 	
 	//Drive train (might change)
 	private final DifferentialDrive driveTrain;
@@ -90,7 +97,7 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain = new DifferentialDrive(lGroup, rGroup);
 		
 		//Sets drive state
-		isHighGear = false;
+		isHighGear = true;
 		isLowGear = false;
 		driveState = DriveState.OPEN_LOOP;
 	}
@@ -123,7 +130,28 @@ public class Drive extends Command implements AutoCommand{
 		//Standard open loop driving
 		//TODO make sure other states do not interfere
 		//TODO test is correct axis for joystick
-		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1, Joysticks.getInstance().getDriveStick().getX());
+		if(isHighGear) {
+			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1 * HIGH_GEAR, Joysticks.getInstance().getDriveStick().getX() * HIGH_GEAR);
+		}else {
+			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1 * LOW_GEAR, Joysticks.getInstance().getDriveStick().getX() * LOW_GEAR);
+		}
+		
+		if(Joysticks.getInstance().getDriveStick().getRawButton(Constants.DRIVE_GEAR_BUTTON) && released){
+			if(isHighGear) {
+				isHighGear = false;
+				isLowGear = true;
+			}else if(isLowGear) {
+				isHighGear = true;
+				isLowGear = false;
+			}
+			
+			released = false;
+		}
+		
+		//close claw, I assume
+		if(!Joysticks.getInstance().getDriveStick().getRawButton(Constants.GRABBER_BUTTON)) {
+			released = true;
+		}
 	}
 	
 	/*

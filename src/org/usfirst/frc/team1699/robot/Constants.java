@@ -88,4 +88,7 @@ public class Constants {
 	
 	//PCM Constants
 	public static final int PCM_ID = 1;
+	
+	//Drive Joystick Constants
+	public static final int DRIVE_GEAR_BUTTON = 0; //TODO Populate
 }
