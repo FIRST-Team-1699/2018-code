@@ -59,12 +59,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addDefault("Base Line", new BaseLine());
 		SmartDashboard.putData("Auto mode chooser", autoChooser);
 		
-		//Reset sensors
-		Drive.getInstance().zeroAllSensors();
-		CubeGrabber.getInstance().zeroAllSensors();
-		Elevator.getInstance().zeroAllSensors();
-		
 		//Run Auto
+		System.out.println("Running Auto");
 		((AutoMode) autoChooser.getSelected()).runAuto();
 		
 		//Output to Dashboard

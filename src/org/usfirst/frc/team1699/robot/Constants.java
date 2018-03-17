@@ -78,12 +78,12 @@ public class Constants {
 	public static final double BOT_ELEVATOR_LIMIT = 5.0;
 	
 	//Field Dimensions
-	public static final int DISTANCE_TO_BASELINE = 0;
+	public static final int DISTANCE_TO_BASELINE = 90;
 	public static final int DISTANCE_TO_SWITCH = 103;
-	public static final int SWITCH_LENGTH = 0;
+	public static final int SWITCH_LENGTH = 60;
 	
 	//Elevator auto encoder constants
-	public static final double AUTO_SWITCH_UPPER_LIMIT = 3000;
+	public static final double AUTO_SWITCH_UPPER_LIMIT = 5;
 	public static final double AUTO_SWITCH_LOWER_LIMIT = 0.0;
 	
 	//PCM Constants

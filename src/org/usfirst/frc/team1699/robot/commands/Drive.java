@@ -198,19 +198,38 @@ public class Drive extends Command implements AutoCommand{
 		rotatePID.setSetpoint(0);
 		starboardVelocityPID.setSetpoint(distance);
 		starboardVelocityPID.setOutputRange(-1, 1);
-		if(speed > 0) {
-			while(distance > starboardEncoder.get() / 13){
-				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
-				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
-				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
-				//driveTrain.arcadeDrive(speed, 0);
+		System.out.println(starboardEncoder.get());
+		if(useSensor) {
+			if(speed > 0) {
+				while(distance > starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}else{
+				while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+					//driveTrain.arcadeDrive(speed, 0);
+				}
 			}
-		}else{
-			while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
-				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
-				//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
-				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
-				//driveTrain.arcadeDrive(speed, 0);
+		}else {
+			if(speed > 0) {
+				while(distance > starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, 0);
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}else{
+				while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous()){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, 0);
+					//driveTrain.arcadeDrive(speed, 0);
+				}
 			}
 		}
 		driveTrain.arcadeDrive(0, 0);
@@ -229,8 +248,6 @@ public class Drive extends Command implements AutoCommand{
 		driveGyro.reset();
 		if(setPoint < 0) {
 			while(driveGyro.getAngle() > setPoint && DriverStation.getInstance().isAutonomous()) {
-				System.out.println("Gyro: " + driveGyro.getAngle());
-				System.out.println(rotatePID.calculate(driveGyro.getAngle(), .01));
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
 			}
 		}else{
@@ -265,8 +282,12 @@ public class Drive extends Command implements AutoCommand{
 
 	@Override
 	public void zeroAllSensors() {
-		driveGyro.calibrate();
+		driveGyro.reset();
 		portEncoder.reset();
+		starboardEncoder.reset();
+	}
+	
+	public void starboardEncoderZero() {
 		starboardEncoder.reset();
 	}
 	

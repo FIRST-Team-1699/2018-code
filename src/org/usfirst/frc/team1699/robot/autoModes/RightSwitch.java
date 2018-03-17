@@ -13,6 +13,8 @@ public class RightSwitch implements AutoMode{
 	@Override
 	public void runAuto() {
 		
+		System.out.println("Running Right Switch");
+		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(0) == 'R') //checks if switch is on right side

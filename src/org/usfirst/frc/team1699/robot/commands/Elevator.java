@@ -205,8 +205,18 @@ public class Elevator extends Command implements AutoCommand{
 //			setElevator(0);
 //		}
 		for(int i = 0; i < distance; i++) {
-			if(DriverStation.getInstance().isAutonomous()) break;
-			setElevator(speed * -1);
+			if(DriverStation.getInstance().isAutonomous()) {
+				setElevator(speed * -1);
+			}else {
+				System.out.println("Breaking");
+				break;
+			}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		setElevator(0);
 	}

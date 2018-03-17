@@ -58,7 +58,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	public void run() {
 		//TODO Make it move
 		//opens claw, I assume
-		if(Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON) && released){
+		if(Joysticks.getInstance().getDriveStick().getRawButton(Constants.GRABBER_BUTTON) && released){
 			//toggleClawOpen();
 			System.out.println("Fire Claw");
 			toggleClawOpen();
@@ -66,7 +66,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		}
 		
 		//close claw, I assume
-		if(!Joysticks.getInstance().getOperatorStick().getRawButton(Constants.GRABBER_BUTTON)) {
+		if(!Joysticks.getInstance().getDriveStick().getRawButton(Constants.GRABBER_BUTTON)) {
 			released = true;
 		}
 		
@@ -144,16 +144,13 @@ public class CubeGrabber extends Command implements AutoCommand{
 	 * @param speed The desired amount of speed of the rotation
 	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
-		checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
-		if(speed > lower_motor_limit && speed < upper_motor_limit) {
-			if(rotateEncoder.get() < distance) {
-				leftRotate.set(speed);
-			}else{
-				leftRotate.set(0);
-			}
-		}else {
+		//checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
+		if(useSensor) {
+			leftRotate.set(speed);
+		}else{
 			leftRotate.set(0);
 		}
+		leftRotate.set(-0.5);
 	}
 	
 	/*
