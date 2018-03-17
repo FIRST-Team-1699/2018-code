@@ -30,6 +30,10 @@ public class LeftSideSwitch implements AutoMode{
 			CubeGrabber.getInstance().runAuto(0, .7, false);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
+			//Back away
+			Drive.getInstance().runAuto(24, .9, true);
+			//Drop elevator
+			Elevator.getInstance().runAuto(1, .5, false);
 		}
 		else {
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);

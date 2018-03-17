@@ -6,6 +6,7 @@ import org.usfirst.frc.team1699.utils.autonomous.AutoCommand;
 import org.usfirst.frc.team1699.utils.command.Command;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -145,12 +146,21 @@ public class CubeGrabber extends Command implements AutoCommand{
 	 */
 	public void runAuto(double distance, double speed, boolean useSensor) {
 		//checkLimits(Constants.UPPER_LIMIT, Constants.LOWER_LIMIT);
-		if(useSensor) {
-			leftRotate.set(speed);
-		}else{
-			leftRotate.set(0);
+		for(int i = 0; i < distance; i++) {
+			if(DriverStation.getInstance().isAutonomous()) {
+				leftRotate.set(speed * -1);
+			}else {
+				System.out.println("Breaking");
+				break;
+			}
+			
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
-		leftRotate.set(-0.5);
+		leftRotate.set(0);
 	}
 	
 	/*
