@@ -14,11 +14,13 @@ public class LeftEitherScale implements AutoMode{
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(1) == 'L') {
+			//TODO rename l
 			LeftSideScale l = new LeftSideScale();
 			l.runAuto();
 		}
 		//Cross to right side of field
 		else {
+			//TODO replace with an EitherScale once implemented
 			//Most of these numbers are guesses, and will need to be tested and verified. 
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
