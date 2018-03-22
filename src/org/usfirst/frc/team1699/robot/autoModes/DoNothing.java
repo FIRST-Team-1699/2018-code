@@ -6,7 +6,7 @@ public class DoNothing implements AutoMode {
 
 	@Override
 	public void runAuto() {
-		System.out.println("Running DoNothing autonomous");
+		System.out.println("Running Do Nothing autonomous");
 		
 	}
 }
