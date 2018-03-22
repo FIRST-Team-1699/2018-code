@@ -1,6 +1,7 @@
 package org.usfirst.frc.team1699.robot;
 
 import org.usfirst.frc.team1699.robot.autoModes.BaseLine;
+import org.usfirst.frc.team1699.robot.autoModes.DoNothing;
 import org.usfirst.frc.team1699.robot.autoModes.EitherSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.LeftSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.RightSwitch;
@@ -51,12 +52,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//Auto Chooser
+		//TODO Add new autos
+		autoChooser.addDefault("Base Line", new BaseLine());
 		autoChooser = new SendableChooser<AutoMode>();
-		autoChooser.addDefault("Default", new BaseLine());
 		autoChooser.addObject("Left Switch", new LeftSwitch());
 		autoChooser.addObject("Right Switch", new RightSwitch());
 		autoChooser.addObject("Side Chooser", new EitherSwitch());
-		autoChooser.addDefault("Base Line", new BaseLine());
+		autoChooser.addObject("Do Nothing", new DoNothing());
 		SmartDashboard.putData("Auto mode chooser", autoChooser);
 		
 		//Run Auto
@@ -66,11 +68,7 @@ public class Robot extends IterativeRobot {
 		//Output to Dashboard
 		Drive.getInstance().outputToDashboard();
 		CubeGrabber.getInstance().outputToDashboard();
-		Elevator.getInstance().outputToDashboard();
-		
-//		Drive.getInstance().runAuto(130, .6, true);
-		
-		
+		Elevator.getInstance().outputToDashboard();		
 	}
 
 	@Override
