@@ -35,7 +35,8 @@ public class LeftSideSwitch implements AutoMode{
 			//Drop elevator
 			Elevator.getInstance().runAuto(1, .5, false);
 		} else {
-			Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);
+			BaseLine baseLine = new BaseLine();
+			baseLine.runAuto();
 		}
 	}
 

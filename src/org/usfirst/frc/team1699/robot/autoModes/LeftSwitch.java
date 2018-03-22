@@ -30,7 +30,6 @@ public class LeftSwitch implements AutoMode{
 			CubeGrabber.getInstance().dropAuto();
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH / 2, -0.6, true);
 			System.out.println("End");
-			
 		} else {
 			//if switch on right: drives forward and holds crate
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.7, true);

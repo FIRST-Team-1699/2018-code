@@ -39,12 +39,10 @@ public class LeftSideScale implements AutoMode{
 			Drive.getInstance().runAuto(10, -.7, true);
 			//Drop elevator
 			Elevator.getInstance().runAuto(5, -.7, false);
-		}
-		else if(gameData.charAt(0) == 'L') {
+		} else if(gameData.charAt(0) == 'L') {
 			LeftSideSwitch l = new LeftSideSwitch();
 			l.runAuto();
-		}
-		else {
+		} else {
 			BaseLine b = new BaseLine();
 			b.runAuto();
 			

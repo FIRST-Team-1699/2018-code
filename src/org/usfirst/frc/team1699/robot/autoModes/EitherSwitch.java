@@ -10,8 +10,8 @@ import org.usfirst.frc.team1699.robot.commands.Elevator;
 import org.usfirst.frc.team1699.robot.commands.CubeGrabber;
 import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 
-
-
+//TODO test
+//Code is complete
 public class EitherSwitch implements AutoMode{
 
 	@Override
