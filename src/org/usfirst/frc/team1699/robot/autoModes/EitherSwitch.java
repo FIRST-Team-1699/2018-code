@@ -12,6 +12,11 @@ import org.usfirst.frc.team1699.utils.sensors.BetterGryo;
 
 //TODO test
 //Code is complete
+
+/*
+ * Drives to side of switch with correct alliance color and places a cube
+ */
+
 public class EitherSwitch implements AutoMode{
 
 	@Override

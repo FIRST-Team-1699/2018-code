@@ -8,6 +8,10 @@ import org.usfirst.frc.team1699.utils.autonomous.AutoMode;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+/*
+ * Drives forward and places cube is switch is on right side, else, drives to baseline and raises elevator
+ */
+
 public class RightSwitch implements AutoMode{
 
 	@Override

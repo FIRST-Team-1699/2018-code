@@ -8,6 +8,10 @@ import org.usfirst.frc.team1699.robot.commands.CubeGrabber;
 
 import edu.wpi.first.wpilibj.DriverStation;
 
+/*
+ * Drives forward and places cube is switch is on left side, else, drives to baseline and raises elevator
+ */
+
 public class LeftSwitch implements AutoMode{
 
 	@Override
