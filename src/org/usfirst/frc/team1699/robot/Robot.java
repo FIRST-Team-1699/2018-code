@@ -42,10 +42,7 @@ public class Robot extends IterativeRobot {
 		Elevator.getInstance();
 		
 		//Output to Dashboard
-		Drive.getInstance().outputToDashboard();
-		CubeGrabber.getInstance().outputToDashboard();
-		Elevator.getInstance().outputToDashboard();
-		
+		outputAllToDashboard();
 	}
 
 	
@@ -66,9 +63,7 @@ public class Robot extends IterativeRobot {
 		((AutoMode) autoChooser.getSelected()).runAuto();
 		
 		//Output to Dashboard
-		Drive.getInstance().outputToDashboard();
-		CubeGrabber.getInstance().outputToDashboard();
-		Elevator.getInstance().outputToDashboard();		
+		outputAllToDashboard();	
 	}
 
 	@Override
@@ -78,18 +73,20 @@ public class Robot extends IterativeRobot {
 		Elevator.getInstance().run();
 		
 		//Output to Dashboard
-		Drive.getInstance().outputToDashboard();
-		CubeGrabber.getInstance().outputToDashboard();
-		Elevator.getInstance().outputToDashboard();
+		outputAllToDashboard();
 	}
 
 	@Override
 	public void disabledPeriodic() {
 		//Output to Dashboard
+		outputAllToDashboard();
+	}
+	
+	//TODO Should work, but test
+	//Outputs commands to dashboard
+	private void outputAllToDashboard(){
 		Drive.getInstance().outputToDashboard();
 		CubeGrabber.getInstance().outputToDashboard();
 		Elevator.getInstance().outputToDashboard();
 	}
 }
-
-//slash slash
