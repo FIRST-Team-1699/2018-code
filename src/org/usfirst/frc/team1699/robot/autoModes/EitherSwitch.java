@@ -16,8 +16,7 @@ public class EitherSwitch implements AutoMode{
 
 	@Override
 	public void runAuto() {
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
+		String gameData = DriverStation.getInstance().getGameSpecificMessage();
 		//Checks for switch on right
 		if(gameData.charAt(0) == 'R') {
 			//if switch on right: drive to right switch from center of wall and drop crate in switch
