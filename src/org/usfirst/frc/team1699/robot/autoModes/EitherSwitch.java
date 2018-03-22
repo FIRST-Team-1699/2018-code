@@ -37,6 +37,7 @@ public class EitherSwitch implements AutoMode{
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH / 2, -0.9, false);
 	}
 	
+	//Used to drive to the right side of the switch
 	private void rightDrive(){
 		//Drive halfway to switch
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2 - 12, 0.7, true);
@@ -56,6 +57,7 @@ public class EitherSwitch implements AutoMode{
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH / 2 + 16, 0.7, false);
 	}
 	
+	//Used to drive to the left side of the switch
 	private void leftDrive(){
 		//Drive half the distance to the switch
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2 - 12, 0.7, true);
@@ -76,24 +78,12 @@ public class EitherSwitch implements AutoMode{
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH / 2 + 16, 0.7, false);
 	}
 	
+	//Used to drop the cube
 	private void dropCube(){
 		//Lower arm
 		CubeGrabber.getInstance().runAuto(0, 0.7, true);
 		//Drop cube
 		CubeGrabber.getInstance().dropAuto();
-	}
-	
-	
-	
-	/**
-	 * 
-	 * @param gyroAngle the angle to turn the robot to to drive to the switch
-	 * @param switchLength the distance to drive parallel to switch before turning back towards it
-	 */
-	private void autoPath(int gyroAngle, int switchLength) {
-		//TODO fill this method with the commands in the if/else statement
-		//if switch on left: drive to left switch from center of wall and drop crate in switch
-		//Drive half the distance to the switch
 	}
 }
 
