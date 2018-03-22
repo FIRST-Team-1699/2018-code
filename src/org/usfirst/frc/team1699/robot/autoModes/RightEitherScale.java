@@ -17,9 +17,7 @@ public class RightEitherScale implements AutoMode{
 			RightSideScale r = new RightSideScale();
 			//TODO rename r
 			r.runAuto();
-		}
-		//Cross to right side of field
-		else {
+		} else { //Cross to right side of field
 			//TODO replace with EitherScale once implemented 
 			//Most of these numbers are guesses, and will need to be tested and verified. 
 			//They are based on math using numbers from official field drawings

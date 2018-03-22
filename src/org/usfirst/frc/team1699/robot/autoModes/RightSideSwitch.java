@@ -34,8 +34,7 @@ public class RightSideSwitch implements AutoMode{
 			Drive.getInstance().runAuto(24, .9, true);
 			//Drop elevator
 			Elevator.getInstance().runAuto(1, .5, false);
-		}
-		else {
+		} else {
 			Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);
 		}
 	}

@@ -24,7 +24,7 @@ public class EitherSwitch implements AutoMode{
 			rightDrive();
 			//Drops cube
 			dropCube();
-		}else {
+		}else { //Switch is on left
 			//if switch on left: drive to left switch from center of wall and drop crate in switch
 			//Call sequence for driving to left side of switch
 			leftDrive();

@@ -39,8 +39,7 @@ public class RightSideScale implements AutoMode{
 		else if(gameData.charAt(0) == 'R') {
 			RightSideSwitch r = new RightSideSwitch();
 			r.runAuto();
-		}
-		else {
+		} else {
 			BaseLine b = new BaseLine();
 			b.runAuto();
 			
