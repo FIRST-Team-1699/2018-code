@@ -145,7 +145,6 @@ public class Drive extends Command implements AutoCommand{
 			released = false;
 		}
 		
-		//close claw, I assume
 		if(!Joysticks.getInstance().getDriveStick().getRawButton(Constants.GRABBER_BUTTON)) {
 			released = true;
 		}
