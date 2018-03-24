@@ -24,7 +24,7 @@ public class LeftSideScale implements AutoMode{
 			//Test during 6 hours
 			//Drive to center of the end of the scale
 			//286.65 is just a guess!!!
-			Drive.getInstance().runAuto(286.65, .7, true);
+			Drive.getInstance().runAuto(287, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 80);
 			//Zero gyro

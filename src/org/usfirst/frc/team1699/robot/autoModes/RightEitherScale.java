@@ -26,7 +26,7 @@ public class RightEitherScale implements AutoMode{
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
 			//Drive forward
-			Drive.getInstance().runAuto(228.7, .7, true);
+			Drive.getInstance().runAuto(229, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, -80);
 			//Zero gyro
@@ -38,7 +38,7 @@ public class RightEitherScale implements AutoMode{
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to center of scale
-			Drive.getInstance().runAuto(95.3, .7, true);
+			Drive.getInstance().runAuto(95, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 80);
 			//Zero gyro
