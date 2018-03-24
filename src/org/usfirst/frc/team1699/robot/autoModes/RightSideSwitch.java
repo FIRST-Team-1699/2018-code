@@ -10,6 +10,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class RightSideSwitch implements AutoMode{
 
+	/*
+	 * Starts at right side, and places cube on the side of the switch, but only if the correct side of the switch is on the right
+	 * If it is not on the right, it will run the baseline auto
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;
@@ -35,7 +39,8 @@ public class RightSideSwitch implements AutoMode{
 			//Drop elevator
 			Elevator.getInstance().runAuto(1, .5, false);
 		} else {
-			Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);
+			BaseLine b = new BaseLine();
+			b.runAuto();
 		}
 	}
 	

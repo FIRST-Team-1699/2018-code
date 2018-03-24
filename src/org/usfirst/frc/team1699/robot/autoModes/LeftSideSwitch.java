@@ -10,6 +10,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class LeftSideSwitch implements AutoMode{
 
+	/*
+	 * Places cube on the left side of the switch, not the front
+	 * But only if that's the correct side
+	 * Runs the baseline if it's on the other side
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;

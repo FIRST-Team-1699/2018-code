@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class RightSideScale implements AutoMode{
 
+	/*
+	 * Places cube in the scale, but only if the correct side of the scale is on the right
+	 * If it is not on the right, it will place the cube on the right side of the switch, but only if the correct side is on the right
+	 * If neither of those are true, it will run the BaseLine auto
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;

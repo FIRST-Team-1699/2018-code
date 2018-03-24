@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class LeftEitherScale implements AutoMode{
 
+	/*
+	 * Places the cube on the left side of the scale, if that is the correct side
+	 * If not, places it on the left side of the scale, if that is the correct side
+	 * If all that doesn't work, runs the baseline auto
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;

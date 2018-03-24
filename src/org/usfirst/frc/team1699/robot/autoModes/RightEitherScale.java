@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class RightEitherScale implements AutoMode{
 
+	/*
+	 * Starts on right side of field and places one cube on whichever side of the scale is correct, in theory
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;
