@@ -27,6 +27,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 	private final DoubleSolenoid opener;
 	
 	private final VictorSP leftRotate;
+	private final VictorSP rightRotate;
 	
 	private final Encoder rotateEncoder;
 	
@@ -50,6 +51,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		//TODO Uncomment
 		opener = new DoubleSolenoid(Constants.PCM_ID, Constants.GRABBER_SOLENOID_1, Constants.GRABBER_SOLENOID_2);
 		leftRotate = new VictorSP(Constants.GRABBER_LEFT_ROTATE);
+		rightRotate = new VictorSP(Constants.GRABBER_RIGHT_ROTATE);
 		rotateEncoder = new Encoder(Constants.ARM_ENCODER_1, Constants.ARM_ENCODER_2);
 		
 		opener.set(Value.kReverse);
@@ -84,6 +86,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 //		}
 		
 		leftRotate.set(Joysticks.getInstance().getOperatorStick().getY());
+		rightRotate.set(-1 * Joysticks.getInstance().getOperatorStick().getY());
 	}
 	
 	/**
@@ -149,6 +152,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 		for(int i = 0; i < distance; i++) {
 			if(DriverStation.getInstance().isAutonomous()) {
 				leftRotate.set(speed * -1);
+				rightRotate.set(speed);
 			}else {
 				System.out.println("Breaking");
 				break;
@@ -161,6 +165,7 @@ public class CubeGrabber extends Command implements AutoCommand{
 			}
 		}
 		leftRotate.set(0);
+		rightRotate.set(0);
 	}
 	
 	/*

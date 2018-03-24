@@ -51,7 +51,7 @@ public class Constants {
 	
 	//Grabber motors
 	public static final int GRABBER_LEFT_ROTATE = 9;
-	//public static final int GRABBER_RIGHT_ROTATE = 7;
+	public static final int GRABBER_RIGHT_ROTATE = 7;
 	
 	//Solenoids
 	public static final int ANTI_REVERSE_SOLENOID_1 = 7;

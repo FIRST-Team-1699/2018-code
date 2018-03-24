@@ -23,7 +23,7 @@ public class RightSideScale implements AutoMode{
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
 			//Drive to center of the end of the scale
-			//286.65 is just a guess!!!
+			//287 is just a guess!!!
 			Drive.getInstance().runAuto(287, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, -80);
@@ -40,6 +40,8 @@ public class RightSideScale implements AutoMode{
 			CubeGrabber.getInstance().dropAuto();
 			//Back away
 			Drive.getInstance().runAuto(10, -.5, true);
+			//Lower elevator
+			Elevator.getInstance().runAuto(-7, -.5, false);
 		}
 		else if(gameData.charAt(0) == 'R') {
 			RightSideSwitch r = new RightSideSwitch();
