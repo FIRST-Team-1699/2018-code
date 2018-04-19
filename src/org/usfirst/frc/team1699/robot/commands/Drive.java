@@ -38,7 +38,7 @@ public class Drive extends Command implements AutoCommand{
 	}
 	
 	//Constants
-	public static final double LOW_GEAR = 0.5;
+	public static final double LOW_GEAR = 0.7;
 	public static final double HIGH_GEAR = 1;
 	
 	//Hardware control
@@ -129,25 +129,7 @@ public class Drive extends Command implements AutoCommand{
 		//Standard open loop driving
 		//TODO make sure other states do not interfere
 		//TODO test is correct axis for joystick
-		if(isHighGear) {
-			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1 * HIGH_GEAR, Joysticks.getInstance().getDriveStick().getX() * HIGH_GEAR);
-		}else {
-			driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1 * LOW_GEAR, Joysticks.getInstance().getDriveStick().getX() * LOW_GEAR);
-		}
-		
-		if(Joysticks.getInstance().getDriveStick().getRawButton(Constants.DRIVE_GEAR_BUTTON) && released){
-			if(isHighGear) {
-				isHighGear = false;
-			}else {
-				isHighGear = true;
-			}
-			
-			released = false;
-		}
-		
-		if(!Joysticks.getInstance().getDriveStick().getRawButton(Constants.GRABBER_BUTTON)) {
-			released = true;
-		}
+		driveTrain.arcadeDrive(Joysticks.getInstance().getDriveStick().getY() * -1, Joysticks.getInstance().getDriveStick().getX());
 	}
 	
 	/*
@@ -259,6 +241,46 @@ public class Drive extends Command implements AutoCommand{
 		driveTrain.arcadeDrive(0, 0);
 	}
 	
+	public void runAuto(double distance, double speed, boolean useSensor, double timeOut) {
+		rotatePID.setSetpoint(0);
+		starboardVelocityPID.setSetpoint(distance);
+		starboardVelocityPID.setOutputRange(-1, 1);
+		System.out.println(starboardEncoder.get());
+		if(useSensor) {
+			if(speed > 0) {
+				while(distance > starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous() && DriverStation.getInstance().getMatchTime() > timeOut){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}else{
+				while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous() && DriverStation.getInstance().getMatchTime() > timeOut){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}
+		}else {
+			if(speed > 0) {
+				while(distance > starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous() && DriverStation.getInstance().getMatchTime() > timeOut){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, 0);
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}else{
+				while(distance < starboardEncoder.get() / 13 && DriverStation.getInstance().isAutonomous() && DriverStation.getInstance().getMatchTime() > timeOut){
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), 0);
+					//driveTrain.arcadeDrive(starboardVelocityPID.calculate(starboardEncoder.get() / 13, .01), rotatePID.calculate(driveGyro.getAngle(), .01));
+					driveTrain.arcadeDrive(speed, 0);
+					//driveTrain.arcadeDrive(speed, 0);
+				}
+			}
+		}
+		driveTrain.arcadeDrive(0, 0);
+	}	
 	
 	/**
 	 * Pos turns right, neg turns left

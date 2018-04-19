@@ -24,21 +24,27 @@ public class RightSideScale implements AutoMode{
 			//Test during 6 hours
 			//Drive to center of the end of the scale
 			//287 is just a guess!!!
+			//Zero encoder just in case
+			Drive.getInstance().starboardEncoderZero();
 			Drive.getInstance().runAuto(287, .7, true);
+			CubeGrabber.getInstance().runAuto(1, .7, true);
+			//Raise elevator
+			//10 is just a guess!!!
+			Elevator.getInstance().runAuto(17, .7, false);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, -80);
 			//Claw up
 			//This is also just a guess!!!
-			CubeGrabber.getInstance().runAuto(2, .5, true);
-			//Raise elevator
-			//10 is just a guess!!!
-			Elevator.getInstance().runAuto(10, .7, false);
+			
 			//Drive forward
+			//Acutally zero the encoder first
+			Drive.getInstance().starboardEncoderZero();
 			//tHIs iS aLsO jUsT a GuESs !!!! xDDDDD
-			Drive.getInstance().runAuto(10, .4, true);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
 			//Back away
+			//Acutally zero encoder first
+			Drive.getInstance().starboardEncoderZero();
 			Drive.getInstance().runAuto(10, -.5, true);
 			//Lower elevator
 			Elevator.getInstance().runAuto(-7, -.5, false);

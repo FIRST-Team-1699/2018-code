@@ -51,7 +51,7 @@ public class Constants {
 	
 	//Grabber motors
 	public static final int GRABBER_LEFT_ROTATE = 9;
-	public static final int GRABBER_RIGHT_ROTATE = 7;
+	public static final int GRABBER_RIGHT_ROTATE = 6;
 	
 	//Solenoids
 	public static final int ANTI_REVERSE_SOLENOID_1 = 7;
@@ -79,7 +79,7 @@ public class Constants {
 	
 	//Field Dimensions
 	public static final int DISTANCE_TO_BASELINE = 90;
-	public static final int DISTANCE_TO_SWITCH = 103;
+	public static final int DISTANCE_TO_SWITCH = 110;
 	public static final int SWITCH_LENGTH = 60;
 	
 	//Elevator auto encoder constants
@@ -90,5 +90,5 @@ public class Constants {
 	public static final int PCM_ID = 1;
 	
 	//Drive Joystick Constants
-	public static final int DRIVE_GEAR_BUTTON = 0; //TODO Populate
+	public static final int DRIVE_GEAR_BUTTON = 1; //TODO Populate
 }
