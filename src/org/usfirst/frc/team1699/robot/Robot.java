@@ -13,6 +13,8 @@ import org.usfirst.frc.team1699.robot.autoModes.RightEitherSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.RightSideScale;
 import org.usfirst.frc.team1699.robot.autoModes.RightSideSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.RightSwitch;
+import org.usfirst.frc.team1699.robot.autoModes.Turn90;
+import org.usfirst.frc.team1699.robot.autoModes.Turn90TheOtherWay;
 import org.usfirst.frc.team1699.robot.autoModes.TwoCube;
 import org.usfirst.frc.team1699.robot.commands.CubeGrabber;
 import org.usfirst.frc.team1699.robot.commands.Drive;
@@ -67,6 +69,8 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Right Side Scale", new RightSideScale());
 		autoChooser.addObject("Two Cube", new TwoCube());
 		autoChooser.addObject("Do Nothing", new DoNothing());
+		autoChooser.addObject("Turn 90", new Turn90());
+		autoChooser.addObject("Turn 90 the other way", new Turn90TheOtherWay());
 		SmartDashboard.putData("Auto mode chooser", autoChooser);
 		
 		//Output to Dashboard

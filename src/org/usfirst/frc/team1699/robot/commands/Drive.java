@@ -89,7 +89,7 @@ public class Drive extends Command implements AutoCommand{
 		
 		//Software controllers
 		//TODO Give real values
-		rotatePID = new SynchronousPIDF(0.4, 0.1, 0.2);
+		rotatePID = new SynchronousPIDF(0.15, 0.1, 0.2);
 		portVelocityPID = new SynchronousPIDF(0.4, 0.0, 0.0);
 		starboardVelocityPID = new SynchronousPIDF(0.0, 0.0, 0.0);
 		
@@ -291,17 +291,34 @@ public class Drive extends Command implements AutoCommand{
 	 */
 	public void autoTurn(double speed, double setPoint) {
 		int setpointToleranceCount = 0;
+		double rotate_speed;
+		double angle;
 		rotatePID.setSetpoint(setPoint);
 		driveGyro.reset();
-		if(setPoint < 0) {
-			while(driveGyro.getAngle() > setPoint && DriverStation.getInstance().isAutonomous() && setpointToleranceCount <= 100) {
-				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
-				if(checkTolerance(driveGyro.getAngle(), 1, setPoint)) setpointToleranceCount++;
+		if(setPoint < 0.0) {
+			while(//driveGyro.getAngle() > setPoint && 
+					DriverStation.getInstance().isAutonomous() 
+					&& setpointToleranceCount <= 50) {
+				angle = driveGyro.getAngle();
+				rotate_speed = rotatePID.calculate(angle, .1);
+				driveTrain.arcadeDrive(speed, rotate_speed/1);
+				if(checkTolerance(driveGyro.getAngle() , 1, setPoint)) setpointToleranceCount++;
+				
+				//System.out.println("count: " + setpointToleranceCount);
+				//System.out.println("gyro angle: " + driveGyro.getAngle());
 			}
 		}else{
-			while(driveGyro.getAngle() < setPoint && DriverStation.getInstance().isAutonomous() && setpointToleranceCount <= 100) {
-				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
-				if(checkTolerance(driveGyro.getAngle(), 1, setPoint)) setpointToleranceCount++;
+			while(//driveGyro.getAngle() < setPoint && 
+					DriverStation.getInstance().isAutonomous()
+					&& setpointToleranceCount <= 50) {
+				rotate_speed = rotatePID.calculate(driveGyro.getAngle(), .1);
+				angle = driveGyro.getAngle();
+				driveTrain.arcadeDrive(speed, rotate_speed/1);
+				if(checkTolerance(driveGyro.getAngle() , 1, setPoint)) setpointToleranceCount++;
+				
+				System.out.print("count: " + setpointToleranceCount + "\t\t");
+				System.out.print("gyro angle: " + angle + "\t\t");
+				System.out.println("Rotate Speed: " + rotate_speed);
 			}
 		}
 	}

@@ -116,6 +116,8 @@ public class SynchronousPIDF {
         } else if (m_result < m_minimumOutput) {
             m_result = m_minimumOutput;
         }
+        
+        System.out.println("P: " + m_error + " I: " + m_totalError);
         return m_result;
     }
 
