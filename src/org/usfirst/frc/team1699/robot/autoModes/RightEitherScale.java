@@ -9,21 +9,24 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class RightEitherScale implements AutoMode{
 
+	/*
+	 * Starts on right side of field and places one cube on whichever side of the scale is correct, in theory
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(1) == 'L') {
 			RightSideScale r = new RightSideScale();
+			//TODO rename r
 			r.runAuto();
-		}
-		//Cross to right side of field
-		else {
+		} else { //Cross to right side of field
+			//TODO replace with EitherScale once implemented 
 			//Most of these numbers are guesses, and will need to be tested and verified. 
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
 			//Drive forward
-			Drive.getInstance().runAuto(228.7, .7, true);
+			Drive.getInstance().runAuto(229, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, -80);
 			//Zero gyro
@@ -35,7 +38,7 @@ public class RightEitherScale implements AutoMode{
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to center of scale
-			Drive.getInstance().runAuto(95.3, .7, true);
+			Drive.getInstance().runAuto(95, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 80);
 			//Zero gyro

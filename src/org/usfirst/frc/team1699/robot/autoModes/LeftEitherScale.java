@@ -9,21 +9,25 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class LeftEitherScale implements AutoMode{
 
+	/*
+	 * Places the cube on the left side of the scale, if that is the correct side
+	 * If not, places it on the left side of the scale, if that is the correct side
+	 * If all that doesn't work, runs the baseline auto
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		if(gameData.charAt(1) == 'L') {
-			LeftSideScale l = new LeftSideScale();
-			l.runAuto();
-		}
-		//Cross to right side of field
-		else {
+			LeftSideScale leftScale = new LeftSideScale();
+			leftScale.runAuto();
+		} else { //Cross to right side of field
+			//TODO replace with an EitherScale once implemented
 			//Most of these numbers are guesses, and will need to be tested and verified. 
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
 			//Drive forward
-			Drive.getInstance().runAuto(228.7, .7, true);
+			Drive.getInstance().runAuto(229, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 80);
 			//Zero gyro
@@ -35,9 +39,9 @@ public class LeftEitherScale implements AutoMode{
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to center of scale
-			Drive.getInstance().runAuto(95.3, .7, true);
+			Drive.getInstance().runAuto(95, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, -80);
+			Drive.getInstance().autoTurn(0, -80);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Lower claw

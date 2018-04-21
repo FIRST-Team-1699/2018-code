@@ -10,6 +10,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 public class LeftSideSwitch implements AutoMode{
 
+	/*
+	 * Places cube on the left side of the switch, not the front
+	 * But only if that's the correct side
+	 * Runs the baseline if it's on the other side
+	 */
 	@Override
 	public void runAuto() {
 		String gameData;
@@ -34,9 +39,9 @@ public class LeftSideSwitch implements AutoMode{
 			Drive.getInstance().runAuto(24, .9, true);
 			//Drop elevator
 			Elevator.getInstance().runAuto(1, .5, false);
-		}
-		else {
-			Drive.getInstance().runAuto(Constants.DISTANCE_TO_BASELINE + 10, .7, true);
+		} else {
+			BaseLine baseLine = new BaseLine();
+			baseLine.runAuto();
 		}
 	}
 

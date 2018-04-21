@@ -218,7 +218,7 @@ public class Elevator extends Command implements AutoCommand{
 				e.printStackTrace();
 			}
 		}
-		setElevator(0);
+		setElevator(-0.1);
 	}
 
 	@Override
