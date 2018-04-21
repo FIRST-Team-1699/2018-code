@@ -269,17 +269,27 @@ public class Drive extends Command implements AutoCommand{
 	 * @param setPoint The point at which the robot should stop rotation
 	 */
 	public void autoTurn(double speed, double setPoint) {
+		int setpointToleranceCount = 0;
 		rotatePID.setSetpoint(setPoint);
 		driveGyro.reset();
 		if(setPoint < 0) {
-			while(driveGyro.getAngle() > setPoint && DriverStation.getInstance().isAutonomous()) {
+			while(driveGyro.getAngle() > setPoint && DriverStation.getInstance().isAutonomous() && setpointToleranceCount <= 100) {
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+				if(checkTolerance(driveGyro.getAngle(), 1, setPoint)) setpointToleranceCount++;
 			}
 		}else{
-			while(driveGyro.getAngle() < setPoint && DriverStation.getInstance().isAutonomous()) {
+			while(driveGyro.getAngle() < setPoint && DriverStation.getInstance().isAutonomous() && setpointToleranceCount <= 100) {
 				driveTrain.arcadeDrive(speed, rotatePID.calculate(driveGyro.getAngle(), .01));
+				if(checkTolerance(driveGyro.getAngle(), 1, setPoint)) setpointToleranceCount++;
 			}
 		}
+	}
+	
+	private boolean checkTolerance(double gyro, double tolerance, double goal) {
+		double low = goal - tolerance;
+		double high = goal + tolerance;
+		if(gyro <= high && gyro >= low) return true;
+		else return false;
 	}
 	
 	@Override
