@@ -24,29 +24,21 @@ public class LeftSideScale implements AutoMode{
 			//Test during 6 hours
 			//Drive to center of the end of the scale
 			//286.65 is just a guess!!!
-			Drive.getInstance().runAuto(287, .7, true);
+			Drive.getInstance().runAuto(292, 1, true);
 			CubeGrabber.getInstance().runAuto(1, .7, true);
-			Elevator.getInstance().runAuto(17, .7, false);
-			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, 70);
-			//Zero encoder
+			Drive.getInstance().autoTurn(.7, 90);
 			Drive.getInstance().starboardEncoderZero();
-			//Claw up
-			//This is also just a guess!!!
-			
-			//Raise elevator
-			//10 is just a guess!!!
-			
-			//Drive forward
-			//tHIs iS aLsO jUsT a GuESs !!!! xDDDDD
+			Drive.getInstance().runAuto(-36, -1, false);
+			Elevator.getInstance().runAuto(13, 1, false);
 			Drive.getInstance().starboardEncoderZero();
+			Drive.getInstance().runAuto(19, .6, false);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
 			//Back away
 			Drive.getInstance().starboardEncoderZero();
-			Drive.getInstance().runAuto(10, -.7, true);
+			Drive.getInstance().runAuto(-10, -1, true);
 			//Drop elevator
-			Elevator.getInstance().runAuto(5, -.7, false);
+			Elevator.getInstance().runAuto(9, -.9, false);
 		} else if(gameData.charAt(0) == 'L') {
 			LeftSideSwitch l = new LeftSideSwitch();
 			l.runAuto();

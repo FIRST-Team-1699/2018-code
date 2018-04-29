@@ -25,19 +25,19 @@ public class LeftEitherSwitch implements AutoMode{
 		else {
 			Drive.getInstance().runAuto(229, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.7, 80);
+			Drive.getInstance().autoTurn(.7, 90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive across field to right side
 			Drive.getInstance().runAuto(227, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.7, 80);
+			Drive.getInstance().autoTurn(.7, 90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to line up with middle of switch
 			Drive.getInstance().runAuto(61, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.7, 80);
+			Drive.getInstance().autoTurn(.7, 90);
 			//Now facing switch
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();

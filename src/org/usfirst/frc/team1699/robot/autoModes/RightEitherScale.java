@@ -28,19 +28,19 @@ public class RightEitherScale implements AutoMode{
 			//Drive forward
 			Drive.getInstance().runAuto(229, .7, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, -80);
+			Drive.getInstance().autoTurn(.5, -90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive across field to right side
 			Drive.getInstance().runAuto(227, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, 80);
+			Drive.getInstance().autoTurn(.5, 90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to center of scale
 			Drive.getInstance().runAuto(95, .7, true);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, 80);
+			Drive.getInstance().autoTurn(.5, 90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Lower claw

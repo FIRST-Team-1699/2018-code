@@ -48,13 +48,13 @@ public class EitherSwitch implements AutoMode{
 		//Drive halfway to switch
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2 - 12, 0.7, true);
 		//Turn right 90 degrees, 80 to account for gyro error
-		Drive.getInstance().autoTurn(0, 80);
+		Drive.getInstance().autoTurn(0, 90);
 		//Zero encoder
 		Drive.getInstance().starboardEncoderZero();
 		//Drive to the middle of the right side of the switch
 		Drive.getInstance().runAuto(Constants.SWITCH_LENGTH / 2 + 14, 0.7, false);
 		//Turn left 90 degrees, -80 to account for gyro error
-		Drive.getInstance().autoTurn(0, -80);
+		Drive.getInstance().autoTurn(0, -90);
 		//Raise elevator
 		Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.7, false);
 		//Zero encoder again
@@ -70,7 +70,7 @@ public class EitherSwitch implements AutoMode{
 		//Drive half the distance to the switch
 		Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2 - 12, 0.7, true);
 		//Turn left 90 degrees, -80 to account for gyro inaccuracy
-		Drive.getInstance().autoTurn(0, -80);
+		Drive.getInstance().autoTurn(0, -90);
 		//Zero encoder
 		Drive.getInstance().starboardEncoderZero();
 		//Drive to middle of left side of switch

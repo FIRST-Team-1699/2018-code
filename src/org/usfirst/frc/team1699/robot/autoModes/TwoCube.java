@@ -15,37 +15,33 @@ public class TwoCube implements AutoMode{
 		String gamedata;
 		gamedata = DriverStation.getInstance().getGameSpecificMessage();
 		if(gamedata.charAt(0) == 'R' && gamedata.charAt(1) == 'R') {
-			RightSideScale rs = new RightSideScale();
-			//Leaves robot in null zone
-			rs.runAuto();
-			//Zero gyro
+			//Drive forward to scale, 230 inches at full speed
+			Drive.getInstance().runAuto(230, 1, true);
+			//Turn left 35 degrees at .5 speed
+			Drive.getInstance().autoTurn(.5, -35);
+			//Lower claw
+			CubeGrabber.getInstance().runAuto(1, .8, false);
+			//Raise elevator to full height at max speed
+			Elevator.getInstance().runAuto(13, 1, false);
+			//Zero encoder
 			Drive.getInstance().starboardEncoderZero();
-			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, -80);
-			//Zero gyro
-			Drive.getInstance().starboardEncoderZero();
-			//Drive forward
-			Drive.getInstance().runAuto(95, .7, true);
-			//Turn right 90
-			Drive.getInstance().autoTurn(.5, 80);
-			//Turn left 90
-			Drive.getInstance().starboardEncoderZero();
-			//Drive forward
-			Drive.getInstance().runAuto(24, .7, true);
-			//Turn left 90
-			Drive.getInstance().autoTurn(.5, -80);
-			//Drive to cube
-			Drive.getInstance().runAuto(10, .5, true);
-			//Grab cube
-			CubeGrabber.getInstance().dropAuto();
-			//Back up a little
-			Drive.getInstance().runAuto(5, .5, true);
-			//Raise elevator
-			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, .7, false);
-			//Drive forward
-			Drive.getInstance().runAuto(5, .5, true);
+			//Drive forward to scale, 14 inches at .7 speed
+			Drive.getInstance().runAuto(14, .7, false);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
+			//Zero encoder
+			Drive.getInstance().starboardEncoderZero();
+			//Back up from scale, 24 inches at .7 speed
+			Drive.getInstance().runAuto(-24, -.7, false);
+			//Lower elevator at near max speed
+			Elevator.getInstance().runAuto(9, -.9, false);
+			//Turn left 95 degrees at .5 speed, hopefully to line up with cube
+			Drive.getInstance().autoTurn(.5, -95);
+			//Zero encoder
+			Drive.getInstance().starboardEncoderZero();
+			//Drive forward 25 inches at .7 speed to hopefully line up to grab cube
+			Drive.getInstance().runAuto(25, .7, false);
+			
 		}
 	}
 

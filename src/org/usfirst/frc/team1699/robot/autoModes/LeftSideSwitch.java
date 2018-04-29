@@ -24,7 +24,7 @@ public class LeftSideSwitch implements AutoMode{
 			//Drive forward to end of side of switch
 			Drive.getInstance().runAuto(159, .7, true);
 			//Turn right 90 degrees, -80 to compensate for gyro inaccuracy
-			Drive.getInstance().autoTurn(.5, 80);
+			Drive.getInstance().autoTurn(.5, 90);
 			//Zero encoder
 			Drive.getInstance().starboardEncoderZero();
 			//Raise elevator

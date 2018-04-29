@@ -31,7 +31,7 @@ public class RightSwitch implements AutoMode{
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, 0.5, true);
 			System.out.println("Elevator");
 			//Drive halfway to switch
-			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH, 0.9, true);
+			Drive.getInstance().runAuto(Constants.DISTANCE_TO_SWITCH/2, 0.9, true);
 			System.out.println("Drive 2");
 			//Lower claw
 			CubeGrabber.getInstance().runAuto(100, 0.7, true);
