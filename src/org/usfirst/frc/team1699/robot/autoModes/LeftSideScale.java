@@ -28,7 +28,7 @@ public class LeftSideScale implements AutoMode{
 			CubeGrabber.getInstance().runAuto(1, .7, true);
 			Drive.getInstance().autoTurn(.7, 90);
 			Drive.getInstance().starboardEncoderZero();
-			Drive.getInstance().runAuto(-36, -1, false);
+			Drive.getInstance().runAuto(-20, -1, false);
 			Elevator.getInstance().runAuto(13, 1, false);
 			Drive.getInstance().starboardEncoderZero();
 			Drive.getInstance().runAuto(19, .6, false);

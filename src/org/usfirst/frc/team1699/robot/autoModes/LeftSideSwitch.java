@@ -20,9 +20,9 @@ public class LeftSideSwitch implements AutoMode{
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
 		//checks for switch on right
-		if(gameData.charAt(0) == 'R') {
+		if(gameData.charAt(0) == 'L') {
 			//Drive forward to end of side of switch
-			Drive.getInstance().runAuto(159, .7, true);
+			Drive.getInstance().runAuto(130, .9, true);
 			//Turn right 90 degrees, -80 to compensate for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 90);
 			//Zero encoder
@@ -30,15 +30,15 @@ public class LeftSideSwitch implements AutoMode{
 			//Raise elevator
 			Elevator.getInstance().runAuto(Constants.AUTO_SWITCH_UPPER_LIMIT, .7, false);
 			//Drive forward to switch
-			Drive.getInstance().runAuto(24, .7, true);
+			Drive.getInstance().runAuto(18, .7, false);
 			//Raise arm
-			CubeGrabber.getInstance().runAuto(0, .7, false);
+			CubeGrabber.getInstance().runAuto(1, .7, false);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
 			//Back away
-			Drive.getInstance().runAuto(24, .9, true);
+			Drive.getInstance().runAuto(-24, -.9, false);
 			//Drop elevator
-			Elevator.getInstance().runAuto(1, .5, false);
+			Elevator.getInstance().runAuto(1, -.5, false);
 		} else {
 			BaseLine baseLine = new BaseLine();
 			baseLine.runAuto();

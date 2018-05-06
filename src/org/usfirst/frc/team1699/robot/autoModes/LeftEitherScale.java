@@ -27,33 +27,35 @@ public class LeftEitherScale implements AutoMode{
 			//They are based on math using numbers from official field drawings
 			//Test during 6 hours
 			//Drive forward
-			Drive.getInstance().runAuto(229, .7, true);
+			Drive.getInstance().runAuto(229, .9, true);
 			//Turn right 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, 90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive across field to right side
-			Drive.getInstance().runAuto(227, .7, true);
+			Drive.getInstance().runAuto(227, .7, false);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
 			Drive.getInstance().autoTurn(.5, -90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Drive forward to center of scale
-			Drive.getInstance().runAuto(95, .7, true);
+			Drive.getInstance().runAuto(45, .7, false);
 			//Turn left 90 degrees, 80 to account for gyro inaccuracy
-			Drive.getInstance().autoTurn(0, -90);
+			Drive.getInstance().autoTurn(0.50, -90);
 			//Zero gyro
 			Drive.getInstance().starboardEncoderZero();
 			//Lower claw
 			CubeGrabber.getInstance().runAuto(2, .5, false);
 			//Raise elevator
-			Elevator.getInstance().runAuto(10, .7, false);
+			Drive.getInstance().starboardEncoderZero();
+			Drive.getInstance().runAuto(-15, -.5, false);
+			Elevator.getInstance().runAuto(13, 1, false);
 			//Drive forward to scale
-			Drive.getInstance().runAuto(10, .4, true);
+			Drive.getInstance().runAuto(10, .4, false);
 			//Drop cube
 			CubeGrabber.getInstance().dropAuto();
 			//Back away
-			Drive.getInstance().runAuto(15, -.7, true);
+			Drive.getInstance().runAuto(15, -.7, false);
 			//Lower elevator
 			Elevator.getInstance().runAuto(5, -.5, false);
 		}

@@ -317,7 +317,7 @@ public class Drive extends Command implements AutoCommand{
 		if(setPoint < 0.0) {
 			while(//driveGyro.getAngle() > setPoint && 
 					DriverStation.getInstance().isAutonomous() 
-					&& setpointToleranceCount <= 50) {
+					&& setpointToleranceCount <= 20) {
 				angle = driveGyro.getAngle();
 				
 				rotate_speed = rotatePID.calculate(angle, .1);
@@ -330,7 +330,7 @@ public class Drive extends Command implements AutoCommand{
 		}else{
 			while(//driveGyro.getAngle() < setPoint && 
 					DriverStation.getInstance().isAutonomous()
-					&& setpointToleranceCount <= 50) {
+					&& setpointToleranceCount <= 20) {
 				rotate_speed = rotatePID.calculate(driveGyro.getAngle(), .1);
 				angle = driveGyro.getAngle();
 				driveTrain.arcadeDrive(speed, rotate_speed/1);

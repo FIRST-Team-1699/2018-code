@@ -8,6 +8,7 @@ import org.usfirst.frc.team1699.robot.autoModes.LeftEitherSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.LeftSideScale;
 import org.usfirst.frc.team1699.robot.autoModes.LeftSideSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.LeftSwitch;
+import org.usfirst.frc.team1699.robot.autoModes.LeftTwoCube;
 import org.usfirst.frc.team1699.robot.autoModes.RightEitherScale;
 import org.usfirst.frc.team1699.robot.autoModes.RightEitherSwitch;
 import org.usfirst.frc.team1699.robot.autoModes.RightSideScale;
@@ -68,6 +69,7 @@ public class Robot extends IterativeRobot {
 		autoChooser.addObject("Right Side Switch", new RightSideSwitch());
 		autoChooser.addObject("Right Side Scale", new RightSideScale());
 		autoChooser.addObject("Two Cube", new TwoCube());
+		autoChooser.addObject("Left Side Two Cube", new LeftTwoCube());
 		autoChooser.addObject("Do Nothing", new DoNothing());
 		autoChooser.addObject("Turn 90", new Turn90());
 		autoChooser.addObject("Turn 90 the other way", new Turn90TheOtherWay());
